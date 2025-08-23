@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Studio del Melucio">
+    <meta name="description" content="FFXIV Class Selection Tool - Choose your language">
+    <meta name="theme-color" content="#667eea">
+    <title>FFXIV Tool - Language Selection</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 50px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .studio-credit {
+            color: #764ba2;
+            font-size: 1em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .language-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .language-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .language-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .flag {
+            font-size: 4em;
+            margin-bottom: 15px;
+            display: block;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            transition: transform 0.3s ease;
+        }
+
+        .language-card:hover .flag {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .language-name {
+            color: #333;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .native-name {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .coming-soon {
+            opacity: 0.5;
+            cursor: not-allowed;
+            position: relative;
+        }
+
+        .coming-soon::after {
+            content: 'Coming Soon';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(102, 126, 234, 0.95);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .coming-soon:hover {
+            transform: none;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .language-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .flag {
+                font-size: 3em;
+            }
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .footer-note a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-note a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚔️ FFXIV Class Selection Tool ⚔️</h1>
+            <div class="subtitle">Choose Your Language / Wählen Sie Ihre Sprache</div>
+            <div class="studio-credit">by Studio del Melucio</div>
+        </div>
+
+        <div class="language-grid">
+            <!-- English (USA) -->
+            <a href="en/index.html" class="language-card">
+                <span class="flag">🇺🇸</span>
+                <div class="language-name">English</div>
+                <div class="native-name">English</div>
+            </a>
+
+            <!-- German -->
+            <a href="de/index.html" class="language-card">
+                <span class="flag">🇩🇪</span>
+                <div class="language-name">German</div>
+                <div class="native-name">Deutsch</div>
+            </a>
+
+            <!-- French -->
+            <a href="fr/index.html" class="language-card">
+                <span class="flag">🇫🇷</span>
+                <div class="language-name">French</div>
+                <div class="native-name">Français</div>
+            </a>
+
+            <!-- Spanish -->
+            <a href="es/index.html" class="language-card">
+                <span class="flag">🇪🇸</span>
+                <div class="language-name">Spanish</div>
+                <div class="native-name">Español</div>
+            </a>
+
+            <!-- Portuguese (Brazil) -->
+            <a href="pt/index.html" class="language-card">
+                <span class="flag">🇧🇷</span>
+                <div class="language-name">Portuguese</div>
+                <div class="native-name">Português</div>
+            </a>
+
+            <!-- Russian -->
+            <a href="ru/index.html" class="language-card">
+                <span class="flag">🇷🇺</span>
+                <div class="language-name">Russian</div>
+                <div class="native-name">Русский</div>
+            </a>
+
+            <!-- Japanese - Now Available! -->
+            <a href="ja/index.html" class="language-card">
+                <span class="flag">🇯🇵</span>
+                <div class="language-name">Japanese</div>
+                <div class="native-name">日本語</div>
+            </a>
+
+            <!-- Korean - Now Available! -->
+            <a href="ko/index.html" class="language-card">
+                <span class="flag">🇰🇷</span>
+                <div class="language-name">Korean</div>
+                <div class="native-name">한국어</div>
+            </a>
+        </div>
+
+        <div class="footer-note">
+            <p>FFXIV © Square Enix. This tool is a fan project.</p>
+            <p>Created with ❤️ by <a href="#">Studio del Melucio</a> © 2025</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Studio del Melucio">
+    <meta name="description" content="FFXIV Charakter-Wahl-Tool - Finde deine perfekte Klasse in Eorzea">
+    <meta name="theme-color" content="#667eea">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="FFXIV Tool">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+    
+    <title>FFXIV Charakter-Wahl-Tool</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .question-container {
+            margin: 30px 0;
+            animation: slideIn 0.5s ease-in;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .question {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .choice-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            min-width: 150px;
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .choice-btn:active {
+            transform: translateY(0);
+        }
+
+        .result-container {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .result-title {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .result-classes {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .result-description {
+            font-size: 1em;
+            font-style: italic;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .restart-btn {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px auto 0;
+            display: block;
+        }
+
+        .restart-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .install-prompt {
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+            animation: slideIn 0.5s ease-in;
+        }
+
+        .install-btn {
+            background: white;
+            color: #4CAF50;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-left: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .install-btn:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 1.6em;
+            }
+            
+            .choice-btn {
+                width: 100%;
+            }
+        }
+
+        .footer-credit {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-credit a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-credit a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="install-prompt" id="installPrompt">
+            📱 Als App installieren für Offline-Nutzung!
+            <button class="install-btn" id="installBtn">Installieren</button>
+        </div>
+        
+        <div class="header">
+            <h1>⚔️ FFXIV Charakter-Wahl-Tool ⚔️</h1>
+            <div class="subtitle">Finde deine perfekte Klasse in Eorzea!</div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <div id="content">
+            <!-- Dynamischer Inhalt wird hier eingefügt -->
+        </div>
+    </div>
+
+    <div class="footer-credit">
+        Entwickelt von <a href="#">Studio del Melucio</a> © 2025
+    </div>
+
+    <script>
+        // App Data
+        const questions = {
+            start: {
+                question: "Willst du lieber anderen helfen oder Schaden verursachen?",
+                choices: [
+                    { text: "Anderen helfen", next: "helpType" },
+                    { text: "Schaden verursachen", next: "dpsRange" }
+                ]
+            },
+            helpType: {
+                question: "Willst du andere heilen oder lieber vor Schaden bewahren?",
+                choices: [
+                    { text: "Heilen", next: "healType" },
+                    { text: "Vor Schaden bewahren", next: "tankType" }
+                ]
+            },
+            healType: {
+                question: "Bevorzugst du direktes Heilen oder präventive Schilde?",
+                choices: [
+                    { text: "Direktes Heilen", next: "directHeal" },
+                    { text: "Präventive Schilde", next: "shieldHeal" }
+                ]
+            },
+            tankType: {
+                question: "Willst du lieber aggressiv angreifen oder kontrolliert verteidigen?",
+                choices: [
+                    { text: "Aggressiv angreifen", next: "aggressiveTank" },
+                    { text: "Kontrolliert verteidigen", next: "defensiveTank" }
+                ]
+            },
+            dpsRange: {
+                question: "Willst du aus der Nähe oder aus der Ferne kämpfen?",
+                choices: [
+                    { text: "Nahkampf", next: "meleeType" },
+                    { text: "Fernkampf", next: "rangedType" }
+                ]
+            },
+            meleeType: {
+                question: "Bevorzugst du wuchtige Angriffe oder schnelle Kombos?",
+                choices: [
+                    { text: "Wuchtige Angriffe", next: "heavyMelee" },
+                    { text: "Schnelle Kombos", next: "fastMelee" }
+                ]
+            },
+            rangedType: {
+                question: "Magisch oder physisch aus der Ferne?",
+                choices: [
+                    { text: "Magisch", next: "magicType" },
+                    { text: "Physisch", next: "physicalRanged" }
+                ]
+            },
+            magicType: {
+                question: "Bevorzugst du zerstörerische Explosionen oder flexible Vielseitigkeit?",
+                choices: [
+                    { text: "Zerstörerische Explosionen", next: "destructiveMagic" },
+                    { text: "Flexible Vielseitigkeit", next: "versatileMagic" }
+                ]
+            }
+        };
+
+        const results = {
+            directHeal: {
+                title: "Direkte Heiler",
+                classes: "Weißmagier (via Startklasse Druide) oder Astrologe (ab Level 30, Heavensward-Erweiterung)",
+                description: "Diese Klassen fokussieren sich auf starke direkte Heilung!"
+            },
+            shieldHeal: {
+                title: "Schild-Heiler",
+                classes: "Gelehrter (via Startklasse Hermetiker) oder Weise (ab Level 70, Endwalker-Erweiterung)",
+                description: "Diese Klassen können Barrieren errichten und dann heilen!"
+            },
+            aggressiveTank: {
+                title: "Aggressive Tanks",
+                classes: "Krieger (via Startklasse Marodeur) oder Revolverklinge (ab Level 60, Shadowbringers-Erweiterung)",
+                description: "Diese Klassen greifen aggressiv an und überwältigen den Feind!"
+            },
+            defensiveTank: {
+                title: "Kontrollierte Tanks",
+                classes: "Paladin (via Startklasse Gladiator) oder Dunkelritter (ab Level 30, Heavensward-Erweiterung)",
+                description: "Diese Klassen verteidigen kontrolliert und beschützen die Gruppe!"
+            },
+            heavyMelee: {
+                title: "Wuchtige Nahkämpfer",
+                classes: "Dragoon (via Startklasse Pikenier), Samurai (ab Level 50) oder Schnitter (ab Level 70, Endwalker-Erweiterung)",
+                description: "Diese Klassen verursachen mit kraftvollen Einzelschlägen massiven Schaden!"
+            },
+            fastMelee: {
+                title: "Schnelle Nahkämpfer",
+                classes: "Mönch (via Startklasse Faustkämpfer), Ninja (via Schurke, ab Level 10) oder Viper (ab Level 80, Dawntrail-Erweiterung)",
+                description: "Diese Klassen setzen auf Geschwindigkeit und flüssige Kombos!"
+            },
+            physicalRanged: {
+                title: "Physische Fernkämpfer",
+                classes: "Barde (via Startklasse Waldläufer), Maschinist (ab Level 30, Heavensward-Erweiterung) oder Tänzer (ab Level 60, Shadowbringers-Erweiterung)",
+                description: "Diese Klassen nutzen Bögen, Schusswaffen oder Wurfwaffen und können nebenbei die Gruppe unterstützen!"
+            },
+            destructiveMagic: {
+                title: "Zerstörerische Magier",
+                classes: "Schwarzmagier (via Startklasse Thaumaturg) oder Piktomant (ab Level 80, Dawntrail-Erweiterung)",
+                description: "Diese Klassen spezialisieren sich auf vernichtende Zauber mit hohem Schaden!"
+            },
+            versatileMagic: {
+                title: "Vielseitige Magier",
+                classes: "Beschwörer (via Startklasse Hermetiker) oder Rotmagier (ab Level 50, Stormblood-Erweiterung)",
+                description: "Diese Klassen bieten Flexibilität und können auch unterstützen!"
+            }
+        };
+
+        let currentStep = 'start';
+        let stepCount = 0;
+        let maxSteps = 3;
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progress');
+            const percentage = (stepCount / maxSteps) * 100;
+            progressBar.style.width = percentage + '%';
+        }
+
+        function showQuestion(step) {
+            const content = document.getElementById('content');
+            const questionData = questions[step];
+            
+            if (!questionData) {
+                showResult(step);
+                return;
+            }
+            
+            content.innerHTML = `
+                <div class="question-container">
+                    <div class="question">${questionData.question}</div>
+                    <div class="button-container">
+                        ${questionData.choices.map(choice => `
+                            <button class="choice-btn" onclick="handleChoice('${choice.next}')">
+                                ${choice.text}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleChoice(next) {
+            stepCount++;
+            updateProgress();
+            currentStep = next;
+            showQuestion(next);
+        }
+
+        function showResult(resultKey) {
+            const content = document.getElementById('content');
+            const result = results[resultKey];
+            
+            content.innerHTML = `
+                <div class="result-container">
+                    <div class="result-title">🎉 ${result.title}</div>
+                    <div class="result-classes">${result.classes}</div>
+                    <div class="result-description">${result.description}</div>
+                </div>
+                <button class="restart-btn" onclick="restart()">Neue Suche starten</button>
+            `;
+        }
+
+        function restart() {
+            currentStep = 'start';
+            stepCount = 0;
+            updateProgress();
+            showQuestion('start');
+        }
+
+        // PWA Installation
+        let deferredPrompt;
+        const installPrompt = document.getElementById('installPrompt');
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installPrompt.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('App wurde installiert');
+                }
+                deferredPrompt = null;
+                installPrompt.style.display = 'none';
+            }
+        });
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => console.log('Service Worker registriert'))
+                    .catch(error => console.log('Service Worker Registrierung fehlgeschlagen:', error));
+            });
+        }
+
+        // Start
+        showQuestion('start');
+    </script>
+</body>
+</html>

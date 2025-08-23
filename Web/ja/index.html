@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Studio del Melucio">
+    <meta name="description" content="FFXIV クラス選択ツール - エオルゼアで最適なクラスを見つけよう">
+    <meta name="theme-color" content="#667eea">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="FFXIV ツール">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <title>FFXIV クラス選択ツール</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .question-container {
+            margin: 30px 0;
+            animation: slideIn 0.5s ease-in;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .question {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .choice-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            min-width: 150px;
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .result-container {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .result-title {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .result-classes {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .result-description {
+            font-size: 1em;
+            font-style: italic;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .restart-btn {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px auto 0;
+            display: block;
+        }
+
+        .restart-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .footer-credit {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-credit a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 1.6em;
+            }
+            
+            .choice-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚔️ FFXIV クラス選択ツール ⚔️</h1>
+            <div class="subtitle">エオルゼアで最適なクラスを見つけよう！</div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <div id="content">
+            <!-- 動的コンテンツ -->
+        </div>
+    </div>
+
+    <div class="footer-credit">
+        開発: <a href="#">Studio del Melucio</a> © 2025
+    </div>
+
+    <script>
+        const questions = {
+            start: {
+                question: "仲間を支援したいですか、それともダメージを与えたいですか？",
+                choices: [
+                    { text: "仲間を支援", next: "helpType" },
+                    { text: "ダメージを与える", next: "dpsRange" }
+                ]
+            },
+            helpType: {
+                question: "仲間を回復したいですか、それともダメージから守りたいですか？",
+                choices: [
+                    { text: "回復する", next: "healType" },
+                    { text: "ダメージから守る", next: "tankType" }
+                ]
+            },
+            healType: {
+                question: "直接回復と予防シールド、どちらが好みですか？",
+                choices: [
+                    { text: "直接回復", next: "directHeal" },
+                    { text: "予防シールド", next: "shieldHeal" }
+                ]
+            },
+            tankType: {
+                question: "攻撃的なスタイルと防御的なスタイル、どちらが好みですか？",
+                choices: [
+                    { text: "攻撃的", next: "aggressiveTank" },
+                    { text: "防御的", next: "defensiveTank" }
+                ]
+            },
+            dpsRange: {
+                question: "近接戦闘と遠距離戦闘、どちらが好みですか？",
+                choices: [
+                    { text: "近接戦闘", next: "meleeType" },
+                    { text: "遠距離戦闘", next: "rangedType" }
+                ]
+            },
+            meleeType: {
+                question: "重い一撃と素早いコンボ、どちらが好みですか？",
+                choices: [
+                    { text: "重い一撃", next: "heavyMelee" },
+                    { text: "素早いコンボ", next: "fastMelee" }
+                ]
+            },
+            rangedType: {
+                question: "魔法攻撃と物理攻撃、どちらが好みですか？",
+                choices: [
+                    { text: "魔法攻撃", next: "magicType" },
+                    { text: "物理攻撃", next: "physicalRanged" }
+                ]
+            },
+            magicType: {
+                question: "破壊的な爆発と柔軟な汎用性、どちらが好みですか？",
+                choices: [
+                    { text: "破壊的な爆発", next: "destructiveMagic" },
+                    { text: "柔軟な汎用性", next: "versatileMagic" }
+                ]
+            }
+        };
+
+        const results = {
+            directHeal: {
+                title: "ピュアヒーラー",
+                classes: "白魔道士（幻術士から）または 占星術師（レベル30、蒼天のイシュガルド）",
+                description: "これらのクラスは強力な直接回復に特化しています！"
+            },
+            shieldHeal: {
+                title: "バリアヒーラー",
+                classes: "学者（巴術士から）または 賢者（レベル70、暁月のフィナーレ）",
+                description: "これらのクラスはバリアを張ってから回復できます！"
+            },
+            aggressiveTank: {
+                title: "攻撃的タンク",
+                classes: "戦士（斧術士から）または ガンブレイカー（レベル60、漆黒のヴィランズ）",
+                description: "これらのクラスは積極的に攻撃して敵を圧倒します！"
+            },
+            defensiveTank: {
+                title: "防御的タンク",
+                classes: "ナイト（剣術士から）または 暗黒騎士（レベル30、蒼天のイシュガルド）",
+                description: "これらのクラスは制御された防御でパーティーを守ります！"
+            },
+            heavyMelee: {
+                title: "重撃近接DPS",
+                classes: "竜騎士（槍術士から）、侍（レベル50）または リーパー（レベル70、暁月のフィナーレ）",
+                description: "これらのクラスは強力な一撃で大ダメージを与えます！"
+            },
+            fastMelee: {
+                title: "高速近接DPS",
+                classes: "モンク（格闘士から）、忍者（双剣士から、レベル10）または ヴァイパー（レベル80、黄金のレガシー）",
+                description: "これらのクラスはスピードと流れるようなコンボが特徴です！"
+            },
+            physicalRanged: {
+                title: "物理遠隔DPS",
+                classes: "吟遊詩人（弓術士から）、機工士（レベル30、蒼天のイシュガルド）または 踊り子（レベル60、漆黒のヴィランズ）",
+                description: "これらのクラスは弓、銃、投擲武器を使い、パーティーを支援できます！"
+            },
+            destructiveMagic: {
+                title: "破壊的魔法DPS",
+                classes: "黒魔道士（呪術士から）または ピクトマンサー（レベル80、黄金のレガシー）",
+                description: "これらのクラスは高ダメージの破壊的な魔法に特化しています！"
+            },
+            versatileMagic: {
+                title: "汎用魔法DPS",
+                classes: "召喚士（巴術士から）または 赤魔道士（レベル50、紅蓮のリベレーター）",
+                description: "これらのクラスは柔軟性があり、支援もできます！"
+            }
+        };
+
+        let currentStep = 'start';
+        let stepCount = 0;
+        let maxSteps = 3;
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progress');
+            const percentage = (stepCount / maxSteps) * 100;
+            progressBar.style.width = percentage + '%';
+        }
+
+        function showQuestion(step) {
+            const content = document.getElementById('content');
+            const questionData = questions[step];
+            
+            if (!questionData) {
+                showResult(step);
+                return;
+            }
+            
+            content.innerHTML = `
+                <div class="question-container">
+                    <div class="question">${questionData.question}</div>
+                    <div class="button-container">
+                        ${questionData.choices.map(choice => `
+                            <button class="choice-btn" onclick="handleChoice('${choice.next}')">
+                                ${choice.text}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleChoice(next) {
+            stepCount++;
+            updateProgress();
+            currentStep = next;
+            showQuestion(next);
+        }
+
+        function showResult(resultKey) {
+            const content = document.getElementById('content');
+            const result = results[resultKey];
+            
+            content.innerHTML = `
+                <div class="result-container">
+                    <div class="result-title">🎉 ${result.title}</div>
+                    <div class="result-classes">${result.classes}</div>
+                    <div class="result-description">${result.description}</div>
+                </div>
+                <button class="restart-btn" onclick="restart()">もう一度検索</button>
+            `;
+        }
+
+        function restart() {
+            currentStep = 'start';
+            stepCount = 0;
+            updateProgress();
+            showQuestion('start');
+        }
+
+        showQuestion('start');
+    </script>
+</body>
+</html>

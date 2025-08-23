@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Studio del Melucio">
+    <meta name="description" content="Ferramenta de seleção de classe FFXIV - Encontre sua classe perfeita em Eorzea">
+    <meta name="theme-color" content="#667eea">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="FFXIV Ferramenta">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <title>Ferramenta de Seleção de Classe FFXIV</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .question-container {
+            margin: 30px 0;
+            animation: slideIn 0.5s ease-in;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .question {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .choice-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            min-width: 150px;
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .result-container {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .result-title {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .result-classes {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .result-description {
+            font-size: 1em;
+            font-style: italic;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .restart-btn {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px auto 0;
+            display: block;
+        }
+
+        .restart-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .footer-credit {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-credit a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 1.6em;
+            }
+            
+            .choice-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚔️ Ferramenta de Seleção de Classe FFXIV ⚔️</h1>
+            <div class="subtitle">Encontre sua classe perfeita em Eorzea!</div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <div id="content">
+            <!-- Conteúdo dinâmico -->
+        </div>
+    </div>
+
+    <div class="footer-credit">
+        Desenvolvido por <a href="#">Studio del Melucio</a> © 2025
+    </div>
+
+    <script>
+        const questions = {
+            start: {
+                question: "Você quer ajudar os outros ou causar dano?",
+                choices: [
+                    { text: "Ajudar os outros", next: "helpType" },
+                    { text: "Causar dano", next: "dpsRange" }
+                ]
+            },
+            helpType: {
+                question: "Você quer curar os outros ou protegê-los de dano?",
+                choices: [
+                    { text: "Curar", next: "healType" },
+                    { text: "Proteger de dano", next: "tankType" }
+                ]
+            },
+            healType: {
+                question: "Prefere cura direta ou escudos preventivos?",
+                choices: [
+                    { text: "Cura direta", next: "directHeal" },
+                    { text: "Escudos preventivos", next: "shieldHeal" }
+                ]
+            },
+            tankType: {
+                question: "Prefere ataques agressivos ou defesa controlada?",
+                choices: [
+                    { text: "Ataques agressivos", next: "aggressiveTank" },
+                    { text: "Defesa controlada", next: "defensiveTank" }
+                ]
+            },
+            dpsRange: {
+                question: "Quer lutar corpo a corpo ou à distância?",
+                choices: [
+                    { text: "Corpo a corpo", next: "meleeType" },
+                    { text: "À distância", next: "rangedType" }
+                ]
+            },
+            meleeType: {
+                question: "Prefere golpes pesados ou combos rápidos?",
+                choices: [
+                    { text: "Golpes pesados", next: "heavyMelee" },
+                    { text: "Combos rápidos", next: "fastMelee" }
+                ]
+            },
+            rangedType: {
+                question: "Mágico ou físico à distância?",
+                choices: [
+                    { text: "Mágico", next: "magicType" },
+                    { text: "Físico", next: "physicalRanged" }
+                ]
+            },
+            magicType: {
+                question: "Prefere explosões destrutivas ou versatilidade flexível?",
+                choices: [
+                    { text: "Explosões destrutivas", next: "destructiveMagic" },
+                    { text: "Versatilidade flexível", next: "versatileMagic" }
+                ]
+            }
+        };
+
+        const results = {
+            directHeal: {
+                title: "Curadores Diretos",
+                classes: "Mago Branco (via classe Conjurador) ou Astrólogo (nível 30, expansão Heavensward)",
+                description: "Essas classes focam em cura direta poderosa!"
+            },
+            shieldHeal: {
+                title: "Curadores de Escudo",
+                classes: "Erudito (via classe Arcanista) ou Sábio (nível 70, expansão Endwalker)",
+                description: "Essas classes podem criar barreiras e depois curar!"
+            },
+            aggressiveTank: {
+                title: "Tanques Agressivos",
+                classes: "Guerreiro (via classe Marauder) ou Gunbreaker (nível 60, expansão Shadowbringers)",
+                description: "Essas classes atacam agressivamente e dominam o inimigo!"
+            },
+            defensiveTank: {
+                title: "Tanques Controlados",
+                classes: "Paladino (via classe Gladiador) ou Cavaleiro das Trevas (nível 30, expansão Heavensward)",
+                description: "Essas classes defendem com controle e protegem o grupo!"
+            },
+            heavyMelee: {
+                title: "DPS Corpo a Corpo Pesados",
+                classes: "Dragão (via classe Lanceiro), Samurai (nível 50) ou Ceifador (nível 70, expansão Endwalker)",
+                description: "Essas classes causam dano massivo com golpes únicos poderosos!"
+            },
+            fastMelee: {
+                title: "DPS Corpo a Corpo Rápidos",
+                classes: "Monge (via classe Pugilista), Ninja (via Gatuno, nível 10) ou Víbora (nível 80, expansão Dawntrail)",
+                description: "Essas classes confiam na velocidade e combos fluidos!"
+            },
+            physicalRanged: {
+                title: "DPS à Distância Físicos",
+                classes: "Bardo (via classe Arqueiro), Maquinista (nível 30, expansão Heavensward) ou Dançarino (nível 60, expansão Shadowbringers)",
+                description: "Essas classes usam arcos, armas de fogo ou armas de arremesso e podem apoiar o grupo!"
+            },
+            destructiveMagic: {
+                title: "Magos Destrutivos",
+                classes: "Mago Negro (via classe Taumaturgo) ou Pictomante (nível 80, expansão Dawntrail)",
+                description: "Essas classes se especializam em feitiços devastadores com alto dano!"
+            },
+            versatileMagic: {
+                title: "Magos Versáteis",
+                classes: "Invocador (via classe Arcanista) ou Mago Vermelho (nível 50, expansão Stormblood)",
+                description: "Essas classes oferecem flexibilidade e também podem apoiar!"
+            }
+        };
+
+        let currentStep = 'start';
+        let stepCount = 0;
+        let maxSteps = 3;
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progress');
+            const percentage = (stepCount / maxSteps) * 100;
+            progressBar.style.width = percentage + '%';
+        }
+
+        function showQuestion(step) {
+            const content = document.getElementById('content');
+            const questionData = questions[step];
+            
+            if (!questionData) {
+                showResult(step);
+                return;
+            }
+            
+            content.innerHTML = `
+                <div class="question-container">
+                    <div class="question">${questionData.question}</div>
+                    <div class="button-container">
+                        ${questionData.choices.map(choice => `
+                            <button class="choice-btn" onclick="handleChoice('${choice.next}')">
+                                ${choice.text}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleChoice(next) {
+            stepCount++;
+            updateProgress();
+            currentStep = next;
+            showQuestion(next);
+        }
+
+        function showResult(resultKey) {
+            const content = document.getElementById('content');
+            const result = results[resultKey];
+            
+            content.innerHTML = `
+                <div class="result-container">
+                    <div class="result-title">🎉 ${result.title}</div>
+                    <div class="result-classes">${result.classes}</div>
+                    <div class="result-description">${result.description}</div>
+                </div>
+                <button class="restart-btn" onclick="restart()">Nova busca</button>
+            `;
+        }
+
+        function restart() {
+            currentStep = 'start';
+            stepCount = 0;
+            updateProgress();
+            showQuestion('start');
+        }
+
+        showQuestion('start');
+    </script>
+</body>
+</html>
