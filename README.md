@@ -31,14 +31,14 @@ A multilingual, interactive tool to help new players find their perfect class in
 
 ## 🚀 Live Demo
 
-**[Try it here!](https://studio-del-melucio.github.io/FFXIV-Tool/)**
+**[Try it here!](https://github.com/Studio-del-Melucio/FFXIV-Tool/blob/main/Web/index.html)**
 
 ## 💻 Installation & Usage
 
 ### Web Version (Recommended)
 
 #### Online Usage
-Simply visit the [live demo](https://studio-del-melucio.github.io/FFXIV-Tool/) - no installation needed!
+Simply visit the [live demo](https://github.com/Studio-del-Melucio/FFXIV-Tool/blob/main/Web/index.html) - no installation needed!
 
 #### Local Installation
 
