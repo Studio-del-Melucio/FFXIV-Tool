@@ -2,7 +2,15 @@ const CACHE_NAME = 'ffxiv-tool-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/manifest.json'
+  '/manifest.json',
+  '/de/index.html',
+  '/en/index.html',
+  '/es/index.html',
+  '/fr/index.html',
+  '/ja/index.html',
+  '/ko/index.html',
+  '/pt/index.html',
+  '/ru/index.html'
 ];
 
 // Install Service Worker
@@ -10,7 +18,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Cache geöffnet');
+        console.log('Cache geöffnet'); 
         return cache.addAll(urlsToCache);
       })
   );
