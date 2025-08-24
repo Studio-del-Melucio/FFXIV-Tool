@@ -198,27 +198,41 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Developer**: Studio del Melucio
 - **Game**: Final Fantasy XIV © Square Enix
 - **Community**: Thanks to the FFXIV community for feedback
-- **Translations**: Native speakers who helped verify translations
+- **Translations**: Made via translator. Please send feedback if there's anything not correct.
 
 ## ⚠️ Disclaimer
 
 This is an unofficial fan-made tool. Final Fantasy XIV is a registered trademark of Square Enix Holdings Co., Ltd. All game content and assets are property of Square Enix.
 
-## 📞 Contact & Links
+## 📞 Contact & Social Media
 
-- **GitHub Organization**: [@studio-del-melucio](https://github.com/studio-del-melucio)
-- **Repository**: [FFXIV-Tool](https://github.com/studio-del-melucio/FFXIV-Tool)
-- **Live Tool**: [https://studio-del-melucio.github.io/FFXIV-Tool/](https://studio-del-melucio.github.io/FFXIV-Tool/)
-- **Bug Reports**: [Open an Issue](https://github.com/studio-del-melucio/FFXIV-Tool/issues)
+### Get in Touch
+- **Email**: studio.del.melucio@gmail.com
+- **Discord**: studiodelmelucio
+- **GitHub**: [@Studio-del-Melucio](https://github.com/Studio-del-Melucio)
+
+### Follow Development
+- **Twitter/X**: [@St_del_Melucio](https://twitter.com/St_del_Melucio)
+- **Reddit**: [u/StudioDelMelucio](https://reddit.com/user/StudioDelMelucio)
+- **Facebook**: [Studio del Melucio](https://facebook.com/StudioDelMelucio)
+
+### Support the Project
+- ⭐ **Star this repository** if you find it helpful!
+- 🐛 **Report bugs** via [GitHub Issues](https://github.com/Studio-del-Melucio/FFXIV-Tool/issues)
+- 💡 **Request features** in the [Discussions](https://github.com/Studio-del-Melucio/FFXIV-Tool/discussions)
+- 🌍 **Contribute translations** via Pull Request
+
+### In-Game
+- **Server**: Shiva (Light DC)
+- **Character**: Menelaus Mellaus
+
+---
 
 ## 🚀 Future Plans
 
 - [ ] Add more detailed class descriptions
 - [ ] Include job evolution paths
-- [ ] Add role action recommendations
-- [ ] Implement data persistence for preferences
 - [ ] Add Chinese translation (simplified/traditional)
-- [ ] Create video tutorials for each class
 - [ ] Add community voting for class recommendations
 
 ## 📈 Stats
