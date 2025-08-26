@@ -4,16 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Studio del Melucio">
-    <meta name="description" content="Outil de sélection de classe FFXIV - Trouvez votre classe parfaite à Éorzéa">
+    <meta name="description" content="Outil de Sélection de Classe FFXIV - Trouvez votre classe parfaite dans Éorzéa">
     <meta name="theme-color" content="#667eea">
     
     <!-- PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="FFXIV Outil">
+    <meta name="apple-mobile-web-app-title" content="FFXIV Tool">
     <meta name="mobile-web-app-capable" content="yes">
     
-    <title>Outil de Sélection de Classe FFXIV</title>
+    <!-- Manifest -->
+    <link rel="manifest" href="../manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../icon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../icon-180.png">
+    
+    <title>Outil de Sélection de Personnage FFXIV</title>
     
     <style>
         * {
@@ -27,6 +35,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -121,6 +130,10 @@
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
         }
 
+        .choice-btn:active {
+            transform: translateY(0);
+        }
+
         .result-container {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
@@ -132,24 +145,64 @@
 
         .result-title {
             font-size: 1.4em;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: center;
             font-weight: bold;
         }
 
-        .result-classes {
-            font-size: 1.1em;
+        .result-section {
+            margin-bottom: 20px;
+        }
+
+        .result-section-title {
+            font-size: 1.2em;
+            font-weight: bold;
             margin-bottom: 10px;
-            padding: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 5px;
+        }
+
+        .result-classes {
             background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .class-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .class-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .class-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .class-features {
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .class-features li {
+            margin-bottom: 3px;
         }
 
         .result-description {
             font-size: 1em;
             font-style: italic;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
         }
 
         .restart-btn {
@@ -185,6 +238,33 @@
             transition: width 0.3s ease;
         }
 
+        .install-prompt {
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+            animation: slideIn 0.5s ease-in;
+        }
+
+        .install-btn {
+            background: white;
+            color: #4CAF50;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-left: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .install-btn:hover {
+            transform: scale(1.05);
+        }
+
         .footer-credit {
             text-align: center;
             margin-top: 20px;
@@ -197,6 +277,12 @@
             color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
             font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-credit a:hover {
+            color: white;
+            text-decoration: underline;
         }
 
         @media (max-width: 480px) {
@@ -216,9 +302,14 @@
 </head>
 <body>
     <div class="container">
+        <div class="install-prompt" id="installPrompt">
+            📱 Installer comme application pour usage hors ligne !
+            <button class="install-btn" id="installBtn">Installer</button>
+        </div>
+        
         <div class="header">
-            <h1>⚔️ Outil de Sélection de Classe FFXIV ⚔️</h1>
-            <div class="subtitle">Trouvez votre classe parfaite à Éorzéa !</div>
+            <h1>⚔️ Outil de Sélection de Personnage FFXIV ⚔️</h1>
+            <div class="subtitle">Trouvez votre classe parfaite dans Éorzéa !</div>
         </div>
         
         <div class="progress-bar">
@@ -226,7 +317,7 @@
         </div>
         
         <div id="content">
-            <!-- Contenu dynamique -->
+            <!-- Le contenu dynamique sera inséré ici -->
         </div>
     </div>
 
@@ -235,9 +326,10 @@
     </div>
 
     <script>
+        // App Data
         const questions = {
             start: {
-                question: "Voulez-vous aider les autres ou infliger des dégâts ?",
+                question: "Préférez-vous aider les autres ou infliger des dégâts ?",
                 choices: [
                     { text: "Aider les autres", next: "helpType" },
                     { text: "Infliger des dégâts", next: "dpsRange" }
@@ -247,7 +339,7 @@
                 question: "Voulez-vous soigner les autres ou les protéger des dégâts ?",
                 choices: [
                     { text: "Soigner", next: "healType" },
-                    { text: "Protéger des dégâts", next: "tankType" }
+                    { text: "Protéger des dégâts", next: "allTanks" }
                 ]
             },
             healType: {
@@ -257,36 +349,29 @@
                     { text: "Boucliers préventifs", next: "shieldHeal" }
                 ]
             },
-            tankType: {
-                question: "Préférez-vous des attaques agressives ou une défense contrôlée ?",
-                choices: [
-                    { text: "Attaques agressives", next: "aggressiveTank" },
-                    { text: "Défense contrôlée", next: "defensiveTank" }
-                ]
-            },
             dpsRange: {
-                question: "Voulez-vous combattre au corps à corps ou à distance ?",
+                question: "Voulez-vous combattre de près ou à distance ?",
                 choices: [
-                    { text: "Corps à corps", next: "meleeType" },
-                    { text: "À distance", next: "rangedType" }
+                    { text: "Combat rapproché", next: "meleeType" },
+                    { text: "Combat à distance", next: "rangedType" }
                 ]
             },
             meleeType: {
-                question: "Préférez-vous des coups puissants ou des combos rapides ?",
+                question: "Préférez-vous les attaques lourdes ou les combos rapides ?",
                 choices: [
-                    { text: "Coups puissants", next: "heavyMelee" },
+                    { text: "Attaques lourdes", next: "heavyMelee" },
                     { text: "Combos rapides", next: "fastMelee" }
                 ]
             },
             rangedType: {
-                question: "Magique ou physique à distance ?",
+                question: "Combat à distance magique ou physique ?",
                 choices: [
                     { text: "Magique", next: "magicType" },
                     { text: "Physique", next: "physicalRanged" }
                 ]
             },
             magicType: {
-                question: "Préférez-vous des explosions destructrices ou une polyvalence flexible ?",
+                question: "Préférez-vous les explosions destructrices ou la polyvalence flexible ?",
                 choices: [
                     { text: "Explosions destructrices", next: "destructiveMagic" },
                     { text: "Polyvalence flexible", next: "versatileMagic" }
@@ -295,50 +380,153 @@
         };
 
         const results = {
+            allTanks: {
+                title: "🛡️ Classes Tank",
+                description: "Ces classes dirigent le groupe et protègent les autres des dégâts !",
+                beginners: [
+                    {
+                        name: "Paladin (à partir du Niveau 1)",
+                        features: ["Nombreuses capacités défensives", "Peut soigner les membres du groupe", "Rotation de tank la plus simple"]
+                    },
+                    {
+                        name: "Guerrier (à partir du Niveau 1)",
+                        features: ["Auto-soins très élevés", "Pardonne le mieux les erreurs", "Facile à jouer"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Chevalier Noir (à partir du Niveau 30)",
+                        features: ["Gestion de mana requise", "Fortes capacités offensives", "Esthétique magie sombre"]
+                    },
+                    {
+                        name: "Pistosabreur (à partir du Niveau 60)",
+                        features: ["Mécaniques de combo complexes", "Dégâts élevés pour un tank", "Gameplay rapide"]
+                    }
+                ]
+            },
             directHeal: {
-                title: "Soigneurs Directs",
-                classes: "Mage Blanc (via classe Élémentaliste) ou Astromancien (niveau 30, extension Heavensward)",
-                description: "Ces classes se concentrent sur des soins directs puissants !"
+                title: "💚 Soigneurs Directs",
+                description: "Ces classes se concentrent sur de puissants soins directs !",
+                beginners: [
+                    {
+                        name: "Mage Blanc (à partir du Niveau 1)",
+                        features: ["Soins individuels les plus forts", "Rotation simple", "Nombreux sorts de dégâts sur la durée"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Astromancien (à partir du Niveau 30)",
+                        features: ["Améliore les joueurs individuels avec des cartes", "Choix entre soins et boucliers", "Mécaniques de cartes complexes"]
+                    }
+                ]
             },
             shieldHeal: {
-                title: "Soigneurs Boucliers",
-                classes: "Érudit (via classe Arcaniste) ou Sage (niveau 70, extension Endwalker)",
-                description: "Ces classes peuvent créer des barrières puis soigner !"
-            },
-            aggressiveTank: {
-                title: "Tanks Agressifs",
-                classes: "Guerrier (via classe Maraudeur) ou Pistosabreur (niveau 60, extension Shadowbringers)",
-                description: "Ces classes attaquent agressivement et submergent l'ennemi !"
-            },
-            defensiveTank: {
-                title: "Tanks Contrôlés",
-                classes: "Paladin (via classe Gladiateur) ou Chevalier Noir (niveau 30, extension Heavensward)",
-                description: "Ces classes défendent avec contrôle et protègent le groupe !"
+                title: "🛡️ Soigneurs à Boucliers",
+                description: "Ces classes peuvent créer des barrières puis soigner !",
+                beginners: [
+                    {
+                        name: "Érudit (à partir du Niveau 1)",
+                        features: ["La fée soigne automatiquement", "Boucliers puissants disponibles", "Multitâche facile"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Sage (à partir du Niveau 70)",
+                        features: ["Gestion d'Addersgall", "Dégâts et soins combinés", "Gestion complexe des ressources"]
+                    }
+                ]
             },
             heavyMelee: {
-                title: "DPS Mêlée Puissants",
-                classes: "Chevalier Dragon (via classe Maître d'Hast) ou Samouraï (niveau 50) ou Faucheur (niveau 70, extension Endwalker)",
-                description: "Ces classes infligent des dégâts massifs avec des frappes uniques puissantes !"
+                title: "⚔️ DPS Mêlée Lourds",
+                description: "Ces classes infligent des dégâts massifs avec de puissantes frappes individuelles !",
+                beginners: [
+                    {
+                        name: "Chevalier Dragon (à partir du Niveau 1)",
+                        features: ["Combos longs et prévisibles", "Dégâts sur cible unique élevés", "Attaques de saut spectaculaires"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Samouraï (à partir du Niveau 50)",
+                        features: ["Gestion des ressources Sen", "Choix de combos flexibles", "Dégâts de rafale très élevés"]
+                    },
+                    {
+                        name: "Faucheur (à partir du Niveau 70)",
+                        features: ["Collecte de ressources d'âme", "Mécaniques de transformation", "Dégâts de zone élevés"]
+                    }
+                ]
             },
             fastMelee: {
-                title: "DPS Mêlée Rapides",
-                classes: "Moine (via classe Pugiliste), Ninja (via Surineur, niveau 10) ou Vipère (niveau 80, extension Dawntrail)",
-                description: "Ces classes misent sur la vitesse et les combos fluides !"
+                title: "🥊 DPS Mêlée Rapides",
+                description: "Ces classes misent sur la vitesse et les combos fluides !",
+                beginners: [
+                    {
+                        name: "Moine (à partir du Niveau 1)",
+                        features: ["Combat basé sur le positionnement", "Système de Chakra", "Dégâts constamment élevés"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Ninja (à partir du Niveau 1)",
+                        features: ["Signes de main Mudra", "Timing de Trick Attack", "Fenêtres de rafale complexes"]
+                    },
+                    {
+                        name: "Vipère (à partir du Niveau 80)",
+                        features: ["Mécaniques double-lame", "Système d'Offrandes du Serpent", "Combos de double-frappe rapides"]
+                    }
+                ]
             },
             physicalRanged: {
-                title: "DPS Distance Physiques",
-                classes: "Barde (via classe Archer), Machiniste (niveau 30, extension Heavensward) ou Danseur (niveau 60, extension Shadowbringers)",
-                description: "Ces classes utilisent arcs, armes à feu ou armes de jet et peuvent soutenir le groupe !"
+                title: "🏹 DPS Physiques à Distance",
+                description: "Ces classes utilisent des armes à distance et peuvent soutenir le groupe !",
+                beginners: [
+                    {
+                        name: "Barde (à partir du Niveau 1)",
+                        features: ["Chansons pour soutenir le groupe", "Haute mobilité", "Gameplay basé sur les procs"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Machiniste (à partir du Niveau 30)",
+                        features: ["Compagnon robot", "Mécaniques de surchauffe", "Gestion des fenêtres de rafale"]
+                    },
+                    {
+                        name: "Danseur (à partir du Niveau 60)",
+                        features: ["Système de buff de partenaire", "Procs dépendants du RNG", "Mécaniques de pas de danse"]
+                    }
+                ]
             },
             destructiveMagic: {
-                title: "Mages Destructeurs",
-                classes: "Mage Noir (via classe Occultiste) ou Pictomancien (niveau 80, extension Dawntrail)",
-                description: "Ces classes se spécialisent dans les sorts dévastateurs à hauts dégâts !"
+                title: "🔥 Mages Destructeurs",
+                description: "Ces classes se spécialisent dans les sorts dévastateurs avec de gros dégâts !",
+                beginners: [
+                    {
+                        name: "Mage Noir (à partir du Niveau 1)",
+                        features: ["Rotation Glace/Feu simple", "Temps d'incantation les plus longs", "Dégâts sur cible unique les plus élevés"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Pictomancien (à partir du Niveau 80)",
+                        features: ["Mécaniques de peinture", "Invocation de créatures", "Combinaisons de sorts complexes"]
+                    }
+                ]
             },
             versatileMagic: {
-                title: "Mages Polyvalents",
-                classes: "Invocateur (via classe Arcaniste) ou Mage Rouge (niveau 50, extension Stormblood)",
-                description: "Ces classes offrent flexibilité et peuvent aussi soutenir !"
+                title: "🔮 Mages Polyvalents",
+                description: "Ces classes offrent de la flexibilité et peuvent aussi apporter du soutien !",
+                beginners: [
+                    {
+                        name: "Invocateur (à partir du Niveau 1)",
+                        features: ["Rotation simple", "Gestion de familiers", "Mobilité d'incantation instantanée"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Mage Rouge (à partir du Niveau 50)",
+                        features: ["Équilibre mana Blanc/Noir", "Finisseur combo mêlée", "Mécaniques de double-incantation"]
+                    }
+                ]
             }
         };
 
@@ -386,13 +574,53 @@
             const content = document.getElementById('content');
             const result = results[resultKey];
             
+            let beginnersHtml = '';
+            let advancedHtml = '';
+            
+            if (result.beginners && result.beginners.length > 0) {
+                beginnersHtml = `
+                    <div class="result-section">
+                        <div class="result-section-title">👶 Pour Débutants</div>
+                        <div class="result-classes">
+                            ${result.beginners.map(cls => `
+                                <div class="class-item">
+                                    <div class="class-name">${cls.name}</div>
+                                    <ul class="class-features">
+                                        ${cls.features.map(feature => `<li>${feature}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (result.advanced && result.advanced.length > 0) {
+                advancedHtml = `
+                    <div class="result-section">
+                        <div class="result-section-title">🎯 Pour Avancés</div>
+                        <div class="result-classes">
+                            ${result.advanced.map(cls => `
+                                <div class="class-item">
+                                    <div class="class-name">${cls.name}</div>
+                                    <ul class="class-features">
+                                        ${cls.features.map(feature => `<li>${feature}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
             content.innerHTML = `
                 <div class="result-container">
-                    <div class="result-title">🎉 ${result.title}</div>
-                    <div class="result-classes">${result.classes}</div>
+                    <div class="result-title">${result.title}</div>
+                    ${beginnersHtml}
+                    ${advancedHtml}
                     <div class="result-description">${result.description}</div>
                 </div>
-                <button class="restart-btn" onclick="restart()">Nouvelle recherche</button>
+                <button class="restart-btn" onclick="restart()">Nouvelle Recherche</button>
             `;
         }
 
@@ -403,6 +631,39 @@
             showQuestion('start');
         }
 
+        // PWA Installation
+        let deferredPrompt;
+        const installPrompt = document.getElementById('installPrompt');
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installPrompt.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('Application installée');
+                }
+                deferredPrompt = null;
+                installPrompt.style.display = 'none';
+            }
+        });
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('../sw.js')
+                    .then(registration => console.log('Service Worker enregistré'))
+                    .catch(error => console.log('Échec de l\'enregistrement du Service Worker:', error));
+            });
+        }
+
+        // Start
         showQuestion('start');
     </script>
 </body>

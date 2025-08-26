@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Studio del Melucio">
-    <meta name="description" content="FFXIV 클래스 선택 도구 - 에오르제아에서 완벽한 클래스를 찾아보세요">
+    <meta name="description" content="Strumento di Selezione Classe FFXIV - Trova la tua classe perfetta a Eorzea">
     <meta name="theme-color" content="#667eea">
     
     <!-- PWA Meta Tags -->
@@ -21,7 +21,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="../icon-192.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../icon-180.png">
     
-    <title>FFXIV 캐릭터 선택 도구</title>
+    <title>Strumento di Selezione Personaggio FFXIV</title>
     
     <style>
         * {
@@ -31,7 +31,7 @@
         }
 
         body {
-            font-family: 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
@@ -303,13 +303,13 @@
 <body>
     <div class="container">
         <div class="install-prompt" id="installPrompt">
-            📱 오프라인 사용을 위해 앱으로 설치하세요!
-            <button class="install-btn" id="installBtn">설치</button>
+            📱 Installa come app per l'uso offline!
+            <button class="install-btn" id="installBtn">Installa</button>
         </div>
         
         <div class="header">
-            <h1>⚔️ FFXIV 캐릭터 선택 도구 ⚔️</h1>
-            <div class="subtitle">에오르제아에서 완벽한 클래스를 찾아보세요!</div>
+            <h1>⚔️ Strumento di Selezione Personaggio FFXIV ⚔️</h1>
+            <div class="subtitle">Trova la tua classe perfetta a Eorzea!</div>
         </div>
         
         <div class="progress-bar">
@@ -317,214 +317,214 @@
         </div>
         
         <div id="content">
-            <!-- 동적 콘텐츠가 여기에 삽입됩니다 -->
+            <!-- Il contenuto dinamico verrà inserito qui -->
         </div>
     </div>
 
     <div class="footer-credit">
-        <a href="#">Studio del Melucio</a>에서 개발 © 2025
+        Sviluppato da <a href="#">Studio del Melucio</a> © 2025
     </div>
 
     <script>
         // App Data
         const questions = {
             start: {
-                question: "다른 사람을 돕는 것과 데미지를 주는 것 중 어떤 것을 선호하나요?",
+                question: "Preferisci aiutare gli altri o infliggere danni?",
                 choices: [
-                    { text: "다른 사람 돕기", next: "helpType" },
-                    { text: "데미지 주기", next: "dpsRange" }
+                    { text: "Aiutare gli altri", next: "helpType" },
+                    { text: "Infliggere danni", next: "dpsRange" }
                 ]
             },
             helpType: {
-                question: "다른 사람을 치료하는 것과 데미지로부터 보호하는 것 중 어떤 것을 원하나요?",
+                question: "Vuoi curare gli altri o proteggerli dai danni?",
                 choices: [
-                    { text: "치료", next: "healType" },
-                    { text: "데미지로부터 보호", next: "allTanks" }
+                    { text: "Curare", next: "healType" },
+                    { text: "Proteggere dai danni", next: "allTanks" }
                 ]
             },
             healType: {
-                question: "직접 치료와 예방적 쉴드 중 어떤 것을 선호하나요?",
+                question: "Preferisci la cura diretta o gli scudi preventivi?",
                 choices: [
-                    { text: "직접 치료", next: "directHeal" },
-                    { text: "예방적 쉴드", next: "shieldHeal" }
+                    { text: "Cura diretta", next: "directHeal" },
+                    { text: "Scudi preventivi", next: "shieldHeal" }
                 ]
             },
             dpsRange: {
-                question: "근접 전투와 원거리 전투 중 어떤 것으로 싸우고 싶나요?",
+                question: "Vuoi combattere da vicino o a distanza?",
                 choices: [
-                    { text: "근접 전투", next: "meleeType" },
-                    { text: "원거리 전투", next: "rangedType" }
+                    { text: "Combattimento ravvicinato", next: "meleeType" },
+                    { text: "Combattimento a distanza", next: "rangedType" }
                 ]
             },
             meleeType: {
-                question: "강한 공격과 빠른 콤보 중 어떤 것을 선호하나요?",
+                question: "Preferisci attacchi pesanti o combo veloci?",
                 choices: [
-                    { text: "강한 공격", next: "heavyMelee" },
-                    { text: "빠른 콤보", next: "fastMelee" }
+                    { text: "Attacchi pesanti", next: "heavyMelee" },
+                    { text: "Combo veloci", next: "fastMelee" }
                 ]
             },
             rangedType: {
-                question: "마법 원거리 전투와 물리 원거리 전투 중 어떤 것인가요?",
+                question: "Combattimento a distanza magico o fisico?",
                 choices: [
-                    { text: "마법", next: "magicType" },
-                    { text: "물리", next: "physicalRanged" }
+                    { text: "Magico", next: "magicType" },
+                    { text: "Fisico", next: "physicalRanged" }
                 ]
             },
             magicType: {
-                question: "파괴적인 폭발과 유연한 다양성 중 어떤 것을 선호하나요?",
+                question: "Preferisci esplosioni distruttive o versatilità flessibile?",
                 choices: [
-                    { text: "파괴적인 폭발", next: "destructiveMagic" },
-                    { text: "유연한 다양성", next: "versatileMagic" }
+                    { text: "Esplosioni distruttive", next: "destructiveMagic" },
+                    { text: "Versatilità flessibile", next: "versatileMagic" }
                 ]
             }
         };
 
         const results = {
             allTanks: {
-                title: "🛡️ 탱크 클래스",
-                description: "이 클래스들은 파티를 이끌고 다른 사람들을 데미지로부터 보호합니다!",
+                title: "🛡️ Classi Tank",
+                description: "Queste classi guidano il gruppo e proteggono gli altri dai danni!",
                 beginners: [
                     {
-                        name: "나이트 (레벨 1부터)",
-                        features: ["많은 방어 어빌리티", "파티 멤버 치료 가능", "가장 간단한 탱크 로테이션"]
+                        name: "Paladino (dal Livello 1)",
+                        features: ["Molte abilità difensive", "Può curare i membri del gruppo", "Rotazione tank più semplice"]
                     },
                     {
-                        name: "전사 (레벨 1부터)",
-                        features: ["매우 높은 자가 치유", "실수를 가장 잘 용서해줌", "쉽게 플레이 가능"]
+                        name: "Guerriero (dal Livello 1)",
+                        features: ["Auto-cura molto alta", "Perdona meglio gli errori", "Facile da giocare"]
                     }
                 ],
                 advanced: [
                     {
-                        name: "암흑기사 (레벨 30부터)",
-                        features: ["마나 관리 필요", "강력한 공격 어빌리티", "어둠 마법 미학"]
+                        name: "Cavaliere Oscuro (dal Livello 30)",
+                        features: ["Gestione mana richiesta", "Forti abilità offensive", "Estetica magia oscura"]
                     },
                     {
-                        name: "건브레이커 (레벨 60부터)",
-                        features: ["복잡한 콤보 메카닉", "탱크 중 높은 데미지", "빠른 속도의 게임플레이"]
+                        name: "Gunbreaker (dal Livello 60)",
+                        features: ["Meccaniche combo complesse", "Alto danno per un tank", "Gameplay veloce"]
                     }
                 ]
             },
             directHeal: {
-                title: "💚 직접 힐러",
-                description: "이 클래스들은 강력한 직접 치유에 집중합니다!",
+                title: "💚 Curatori Diretti",
+                description: "Queste classi si concentrano su potenti cure dirette!",
                 beginners: [
                     {
-                        name: "백마도사 (레벨 1부터)",
-                        features: ["가장 강한 단일 치유", "간단한 로테이션", "많은 도트 마법"]
+                        name: "Mago Bianco (dal Livello 1)",
+                        features: ["Cure singole più forti", "Rotazione semplice", "Molte magie danno nel tempo"]
                     }
                 ],
                 advanced: [
                     {
-                        name: "점성술사 (레벨 30부터)",
-                        features: ["카드로 개별 플레이어 강화", "치유와 쉴드 선택", "복잡한 카드 메카닉"]
+                        name: "Astrologo (dal Livello 30)",
+                        features: ["Potenzia singoli giocatori con carte", "Scelta tra cure e scudi", "Meccaniche carte complesse"]
                     }
                 ]
             },
             shieldHeal: {
-                title: "🛡️ 쉴드 힐러",
-                description: "이 클래스들은 배리어를 생성하고 치유할 수 있습니다!",
+                title: "🛡️ Curatori Scudo",
+                description: "Queste classi possono creare barriere e poi curare!",
                 beginners: [
                     {
-                        name: "학자 (레벨 1부터)",
-                        features: ["요정이 자동으로 치유", "강력한 쉴드 사용 가능", "쉬운 멀티태스킹"]
+                        name: "Studioso (dal Livello 1)",
+                        features: ["La fata cura automaticamente", "Scudi potenti disponibili", "Multitasking facile"]
                     }
                 ],
                 advanced: [
                     {
-                        name: "현자 (레벨 70부터)",
-                        features: ["애더스갈 관리", "데미지와 치유 결합", "복잡한 리소스 관리"]
+                        name: "Saggio (dal Livello 70)",
+                        features: ["Gestione Addersgall", "Danno e cura combinati", "Gestione risorse complessa"]
                     }
                 ]
             },
             heavyMelee: {
-                title: "⚔️ 중근접 딜러",
-                description: "이 클래스들은 강력한 개별 공격으로 큰 데미지를 줍니다!",
+                title: "⚔️ DPS Mischia Pesante",
+                description: "Queste classi infliggono danni massicci con colpi individuali potenti!",
                 beginners: [
                     {
-                        name: "용기사 (레벨 1부터)",
-                        features: ["길고 예측 가능한 콤보", "높은 단일 타겟 데미지", "장관인 점프 공격"]
+                        name: "Dragoon (dal Livello 1)",
+                        features: ["Combo lunghe e prevedibili", "Alto danno singolo bersaglio", "Attacchi salto spettacolari"]
                     }
                 ],
                 advanced: [
                     {
-                        name: "사무라이 (레벨 50부터)",
-                        features: ["센 리소스 관리", "유연한 콤보 선택", "매우 높은 버스트 데미지"]
+                        name: "Samurai (dal Livello 50)",
+                        features: ["Gestione risorse Sen", "Scelta combo flessibile", "Danno burst molto alto"]
                     },
                     {
-                        name: "리퍼 (레벨 70부터)",
-                        features: ["소울 리소스 수집", "변신 메카닉", "높은 광역 데미지"]
+                        name: "Mietitore (dal Livello 70)",
+                        features: ["Raccolta risorse anima", "Meccaniche trasformazione", "Alto danno area"]
                     }
                 ]
             },
             fastMelee: {
-                title: "🥊 고속근접 딜러",
-                description: "이 클래스들은 속도와 유연한 콤보에 의존합니다!",
+                title: "🥊 DPS Mischia Veloce",
+                description: "Queste classi si basano su velocità e combo fluidi!",
                 beginners: [
                     {
-                        name: "몽크 (레벨 1부터)",
-                        features: ["포지셔닝 기반 전투", "차크라 시스템", "일관되게 높은 데미지"]
+                        name: "Monaco (dal Livello 1)",
+                        features: ["Combattimento basato posizionamento", "Sistema Chakra", "Danno costantemente alto"]
                     }
                 ],
                 advanced: [
                     {
-                        name: "닌자 (레벨 1부터)",
-                        features: ["인술 수인", "기습 타이밍", "복잡한 버스트 윈도우"]
+                        name: "Ninja (dal Livello 1)",
+                        features: ["Segni mano Mudra", "Timing Trick Attack", "Finestre burst complesse"]
                     },
                     {
-                        name: "바이퍼 (레벨 80부터)",
-                        features: ["듀얼 와일드 메카닉", "서펜트 오퍼링 시스템", "빠른 더블 스트라이크 콤보"]
+                        name: "Vipera (dal Livello 80)",
+                        features: ["Meccaniche doppia impugnatura", "Sistema Offerte Serpente", "Combo doppio colpo veloci"]
                     }
                 ]
             },
             physicalRanged: {
-                title: "🏹 물리원거리 딜러",
-                description: "이 클래스들은 원거리 무기를 사용하고 파티를 지원할 수 있습니다!",
+                title: "🏹 DPS Fisici a Distanza",
+                description: "Queste classi usano armi a distanza e possono supportare il gruppo!",
                 beginners: [
                     {
-                        name: "음유시인 (레벨 1부터)",
-                        features: ["파티 지원을 위한 노래", "높은 기동성", "프록 기반 게임플레이"]
+                        name: "Bardo (dal Livello 1)",
+                        features: ["Canzoni per supporto gruppo", "Alta mobilità", "Gameplay basato proc"]
                     }
                 ],
                 advanced: [
                     {
-                        name: "기공사 (레벨 30부터)",
-                        features: ["로봇 동반자", "오버히트 메카닉", "버스트 윈도우 관리"]
+                        name: "Macchinista (dal Livello 30)",
+                        features: ["Compagno robot", "Meccaniche surriscaldamento", "Gestione finestre burst"]
                     },
                     {
-                        name: "무도가 (레벨 60부터)",
-                        features: ["댄스 파트너 버프 시스템", "RNG 의존 프록", "댄스 스텝 메카닉"]
+                        name: "Ballerino (dal Livello 60)",
+                        features: ["Sistema buff partner danza", "Proc dipendenti RNG", "Meccaniche passi danza"]
                     }
                 ]
             },
             destructiveMagic: {
-                title: "🔥 파괴적 캐스터",
-                description: "이 클래스들은 높은 데미지의 파괴적인 마법에 특화되어 있습니다!",
+                title: "🔥 Maghi Distruttivi",
+                description: "Queste classi si specializzano in incantesimi devastanti con alto danno!",
                 beginners: [
                     {
-                        name: "흑마도사 (레벨 1부터)",
-                        features: ["간단한 얼음/불 로테이션", "가장 긴 시전 시간", "가장 높은 단일 타겟 데미지"]
+                        name: "Mago Nero (dal Livello 1)",
+                        features: ["Rotazione Ghiaccio/Fuoco semplice", "Tempi lancio più lunghi", "Danno singolo bersaglio più alto"]
                     }
                 ],
                 advanced: [
                     {
-                        name: "픽토맨서 (레벨 80부터)",
-                        features: ["그림 메카닉", "생물 소환", "복잡한 마법 조합"]
+                        name: "Pictomante (dal Livello 80)",
+                        features: ["Meccaniche pittura", "Evocazione creature", "Combinazioni incantesimi complesse"]
                     }
                 ]
             },
             versatileMagic: {
-                title: "🔮 다용도 캐스터",
-                description: "이 클래스들은 유연성을 제공하고 지원도 할 수 있습니다!",
+                title: "🔮 Maghi Versatili",
+                description: "Queste classi offrono flessibilità e possono anche fornire supporto!",
                 beginners: [
                     {
-                        name: "소환사 (레벨 1부터)",
-                        features: ["간단한 로테이션", "펫 관리", "즉시 시전 기동성"]
+                        name: "Evocatore (dal Livello 1)",
+                        features: ["Rotazione semplice", "Gestione famigli", "Mobilità lancio istantaneo"]
                     }
                 ],
                 advanced: [
                     {
-                        name: "적마도사 (레벨 50부터)",
-                        features: ["화이트/블랙 마나 밸런스", "근접 콤보 피니셔", "듀얼캐스트 메카닉"]
+                        name: "Mago Rosso (dal Livello 50)",
+                        features: ["Bilanciamento mana Bianco/Nero", "Finisher combo mischia", "Meccaniche doppio lancio"]
                     }
                 ]
             }
@@ -580,7 +580,7 @@
             if (result.beginners && result.beginners.length > 0) {
                 beginnersHtml = `
                     <div class="result-section">
-                        <div class="result-section-title">👶 초보자용</div>
+                        <div class="result-section-title">👶 Per Principianti</div>
                         <div class="result-classes">
                             ${result.beginners.map(cls => `
                                 <div class="class-item">
@@ -598,7 +598,7 @@
             if (result.advanced && result.advanced.length > 0) {
                 advancedHtml = `
                     <div class="result-section">
-                        <div class="result-section-title">🎯 고급자용</div>
+                        <div class="result-section-title">🎯 Per Avanzati</div>
                         <div class="result-classes">
                             ${result.advanced.map(cls => `
                                 <div class="class-item">
@@ -620,7 +620,7 @@
                     ${advancedHtml}
                     <div class="result-description">${result.description}</div>
                 </div>
-                <button class="restart-btn" onclick="restart()">새 검색</button>
+                <button class="restart-btn" onclick="restart()">Nuova Ricerca</button>
             `;
         }
 
@@ -647,7 +647,7 @@
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
-                    console.log('앱이 설치되었습니다');
+                    console.log('App installata');
                 }
                 deferredPrompt = null;
                 installPrompt.style.display = 'none';
@@ -658,8 +658,8 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('../sw.js')
-                    .then(registration => console.log('Service Worker 등록됨'))
-                    .catch(error => console.log('Service Worker 등록 실패:', error));
+                    .then(registration => console.log('Service Worker registrato'))
+                    .catch(error => console.log('Registrazione Service Worker fallita:', error));
             });
         }
 

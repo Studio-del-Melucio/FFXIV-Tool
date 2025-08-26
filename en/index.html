@@ -14,13 +14,14 @@
     <meta name="mobile-web-app-capable" content="yes">
     
     <!-- Manifest -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="../manifest.json">
     
     <!-- Icons -->
-    <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../icon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../icon-180.png">
     
-    <title>FFXIV Class Selection Tool</title>
+    <title>FFXIV Character Selection Tool</title>
     
     <style>
         * {
@@ -34,6 +35,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -143,24 +145,64 @@
 
         .result-title {
             font-size: 1.4em;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: center;
             font-weight: bold;
         }
 
-        .result-classes {
-            font-size: 1.1em;
+        .result-section {
+            margin-bottom: 20px;
+        }
+
+        .result-section-title {
+            font-size: 1.2em;
+            font-weight: bold;
             margin-bottom: 10px;
-            padding: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 5px;
+        }
+
+        .result-classes {
             background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .class-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .class-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .class-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .class-features {
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .class-features li {
+            margin-bottom: 3px;
         }
 
         .result-description {
             font-size: 1em;
             font-style: italic;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
         }
 
         .restart-btn {
@@ -223,20 +265,6 @@
             transform: scale(1.05);
         }
 
-        @media (max-width: 480px) {
-            .container {
-                padding: 25px;
-            }
-            
-            h1 {
-                font-size: 1.6em;
-            }
-            
-            .choice-btn {
-                width: 100%;
-            }
-        }
-
         .footer-credit {
             text-align: center;
             margin-top: 20px;
@@ -256,17 +284,31 @@
             color: white;
             text-decoration: underline;
         }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 1.6em;
+            }
+            
+            .choice-btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="install-prompt" id="installPrompt">
-            📱 Install as app for offline use!
+            📱 Install as App for offline use!
             <button class="install-btn" id="installBtn">Install</button>
         </div>
         
         <div class="header">
-            <h1>⚔️ FFXIV Class Selection Tool ⚔️</h1>
+            <h1>⚔️ FFXIV Character Selection Tool ⚔️</h1>
             <div class="subtitle">Find your perfect class in Eorzea!</div>
         </div>
         
@@ -287,7 +329,7 @@
         // App Data
         const questions = {
             start: {
-                question: "Do you want to help others or deal damage?",
+                question: "Do you prefer helping others or dealing damage?",
                 choices: [
                     { text: "Help others", next: "helpType" },
                     { text: "Deal damage", next: "dpsRange" }
@@ -297,7 +339,7 @@
                 question: "Do you want to heal others or protect them from damage?",
                 choices: [
                     { text: "Heal", next: "healType" },
-                    { text: "Protect from damage", next: "tankType" }
+                    { text: "Protect from damage", next: "allTanks" }
                 ]
             },
             healType: {
@@ -307,29 +349,22 @@
                     { text: "Preventive shields", next: "shieldHeal" }
                 ]
             },
-            tankType: {
-                question: "Do you prefer aggressive attacks or controlled defense?",
-                choices: [
-                    { text: "Aggressive attacks", next: "aggressiveTank" },
-                    { text: "Controlled defense", next: "defensiveTank" }
-                ]
-            },
             dpsRange: {
-                question: "Do you want to fight in melee range or from distance?",
+                question: "Do you want to fight up close or from a distance?",
                 choices: [
-                    { text: "Melee combat", next: "meleeType" },
+                    { text: "Close combat", next: "meleeType" },
                     { text: "Ranged combat", next: "rangedType" }
                 ]
             },
             meleeType: {
-                question: "Do you prefer heavy hits or fast combos?",
+                question: "Do you prefer heavy attacks or fast combos?",
                 choices: [
-                    { text: "Heavy hits", next: "heavyMelee" },
+                    { text: "Heavy attacks", next: "heavyMelee" },
                     { text: "Fast combos", next: "fastMelee" }
                 ]
             },
             rangedType: {
-                question: "Magical or physical from range?",
+                question: "Magical or physical ranged combat?",
                 choices: [
                     { text: "Magical", next: "magicType" },
                     { text: "Physical", next: "physicalRanged" }
@@ -345,50 +380,153 @@
         };
 
         const results = {
+            allTanks: {
+                title: "🛡️ Tank Jobs",
+                description: "These jobs lead the party and protect others from damage!",
+                beginners: [
+                    {
+                        name: "Paladin (from Level 1)",
+                        features: ["Many defensive abilities", "Can heal party members", "Simplest tank rotation"]
+                    },
+                    {
+                        name: "Warrior (from Level 1)",
+                        features: ["Very high self-healing", "Most forgiving of mistakes", "Easy to play"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Dark Knight (from Level 30)",
+                        features: ["Mana management required", "Strong offensive abilities", "Dark magic aesthetic"]
+                    },
+                    {
+                        name: "Gunbreaker (from Level 60)",
+                        features: ["Complex combo mechanics", "High damage for a tank", "Fast-paced gameplay"]
+                    }
+                ]
+            },
             directHeal: {
-                title: "Direct Healers",
-                classes: "White Mage (via Conjurer starting class) or Astrologian (from level 30, Heavensward expansion)",
-                description: "These classes focus on strong direct healing!"
+                title: "💚 Direct Healers",
+                description: "These jobs focus on strong direct healing!",
+                beginners: [
+                    {
+                        name: "White Mage (from Level 1)",
+                        features: ["Strongest single heals", "Simple rotation", "Many damage-over-time spells"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Astrologian (from Level 30)",
+                        features: ["Buffs individual players with cards", "Choice between healing and shields", "Complex card mechanics"]
+                    }
+                ]
             },
             shieldHeal: {
-                title: "Shield Healers",
-                classes: "Scholar (via Arcanist starting class) or Sage (from level 70, Endwalker expansion)",
-                description: "These classes can create barriers and then heal!"
-            },
-            aggressiveTank: {
-                title: "Aggressive Tanks",
-                classes: "Warrior (via Marauder starting class) or Gunbreaker (from level 60, Shadowbringers expansion)",
-                description: "These classes attack aggressively and overwhelm the enemy!"
-            },
-            defensiveTank: {
-                title: "Controlled Tanks",
-                classes: "Paladin (via Gladiator starting class) or Dark Knight (from level 30, Heavensward expansion)",
-                description: "These classes defend with control and protect the group!"
+                title: "🛡️ Shield Healers",
+                description: "These jobs can create barriers and then heal!",
+                beginners: [
+                    {
+                        name: "Scholar (from Level 1)",
+                        features: ["Fairy heals automatically", "Strong shields available", "Easy multitasking"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Sage (from Level 70)",
+                        features: ["Addersgall management", "Damage and healing combined", "Complex resource management"]
+                    }
+                ]
             },
             heavyMelee: {
-                title: "Heavy Melee DPS",
-                classes: "Dragoon (via Lancer starting class), Samurai (from level 50) or Reaper (from level 70, Endwalker expansion)",
-                description: "These classes deal massive damage with powerful single strikes!"
+                title: "⚔️ Heavy Melee DPS",
+                description: "These jobs deal massive damage with powerful individual strikes!",
+                beginners: [
+                    {
+                        name: "Dragoon (from Level 1)",
+                        features: ["Long, predictable combos", "High single-target damage", "Spectacular jump attacks"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Samurai (from Level 50)",
+                        features: ["Sen resource management", "Flexible combo choices", "Very high burst damage"]
+                    },
+                    {
+                        name: "Reaper (from Level 70)",
+                        features: ["Soul resource gathering", "Transformation mechanics", "High AoE damage"]
+                    }
+                ]
             },
             fastMelee: {
-                title: "Fast Melee DPS",
-                classes: "Monk (via Pugilist starting class), Ninja (via Rogue, from level 10) or Viper (from level 80, Dawntrail expansion)",
-                description: "These classes rely on speed and fluid combos!"
+                title: "🥊 Fast Melee DPS",
+                description: "These jobs rely on speed and fluid combos!",
+                beginners: [
+                    {
+                        name: "Monk (from Level 1)",
+                        features: ["Positional-based combat", "Chakra system", "Consistently high damage"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Ninja (from Level 1)",
+                        features: ["Mudra hand signs", "Trick Attack timing", "Complex burst windows"]
+                    },
+                    {
+                        name: "Viper (from Level 80)",
+                        features: ["Dual-wield mechanics", "Serpent Offerings system", "Fast double-strike combos"]
+                    }
+                ]
             },
             physicalRanged: {
-                title: "Physical Ranged DPS",
-                classes: "Bard (via Archer starting class), Machinist (from level 30, Heavensward expansion) or Dancer (from level 60, Shadowbringers expansion)",
-                description: "These classes use bows, firearms, or throwing weapons and can support the group on the side!"
+                title: "🏹 Physical Ranged DPS",
+                description: "These jobs use ranged weapons and can support the party!",
+                beginners: [
+                    {
+                        name: "Bard (from Level 1)",
+                        features: ["Songs for party support", "High mobility", "Proc-based gameplay"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Machinist (from Level 30)",
+                        features: ["Robot companion", "Overheat mechanics", "Burst window management"]
+                    },
+                    {
+                        name: "Dancer (from Level 60)",
+                        features: ["Dance Partner buff system", "RNG-dependent procs", "Dance step mechanics"]
+                    }
+                ]
             },
             destructiveMagic: {
-                title: "Destructive Mages",
-                classes: "Black Mage (via Thaumaturge starting class) or Pictomancer (from level 80, Dawntrail expansion)",
-                description: "These classes specialize in devastating spells with high damage!"
+                title: "🔥 Destructive Casters",
+                description: "These jobs specialize in devastating spells with high damage!",
+                beginners: [
+                    {
+                        name: "Black Mage (from Level 1)",
+                        features: ["Simple Ice/Fire rotation", "Longest cast times", "Highest single-target damage"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Pictomancer (from Level 80)",
+                        features: ["Painting mechanics", "Creature summoning", "Complex spell combinations"]
+                    }
+                ]
             },
             versatileMagic: {
-                title: "Versatile Mages",
-                classes: "Summoner (via Arcanist starting class) or Red Mage (from level 50, Stormblood expansion)",
-                description: "These classes offer flexibility and can also support!"
+                title: "🔮 Versatile Casters",
+                description: "These jobs offer flexibility and can also provide support!",
+                beginners: [
+                    {
+                        name: "Summoner (from Level 1)",
+                        features: ["Simple rotation", "Pet management", "Instant-cast mobility"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Red Mage (from Level 50)",
+                        features: ["White/Black mana balance", "Melee combo finisher", "Dualcast mechanics"]
+                    }
+                ]
             }
         };
 
@@ -436,13 +574,53 @@
             const content = document.getElementById('content');
             const result = results[resultKey];
             
+            let beginnersHtml = '';
+            let advancedHtml = '';
+            
+            if (result.beginners && result.beginners.length > 0) {
+                beginnersHtml = `
+                    <div class="result-section">
+                        <div class="result-section-title">👶 For Beginners</div>
+                        <div class="result-classes">
+                            ${result.beginners.map(cls => `
+                                <div class="class-item">
+                                    <div class="class-name">${cls.name}</div>
+                                    <ul class="class-features">
+                                        ${cls.features.map(feature => `<li>${feature}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (result.advanced && result.advanced.length > 0) {
+                advancedHtml = `
+                    <div class="result-section">
+                        <div class="result-section-title">🎯 For Advanced</div>
+                        <div class="result-classes">
+                            ${result.advanced.map(cls => `
+                                <div class="class-item">
+                                    <div class="class-name">${cls.name}</div>
+                                    <ul class="class-features">
+                                        ${cls.features.map(feature => `<li>${feature}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
             content.innerHTML = `
                 <div class="result-container">
-                    <div class="result-title">🎉 ${result.title}</div>
-                    <div class="result-classes">${result.classes}</div>
+                    <div class="result-title">${result.title}</div>
+                    ${beginnersHtml}
+                    ${advancedHtml}
                     <div class="result-description">${result.description}</div>
                 </div>
-                <button class="restart-btn" onclick="restart()">Start new search</button>
+                <button class="restart-btn" onclick="restart()">Start New Search</button>
             `;
         }
 
@@ -469,7 +647,7 @@
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
-                    console.log('App was installed');
+                    console.log('App installed');
                 }
                 deferredPrompt = null;
                 installPrompt.style.display = 'none';
@@ -479,7 +657,7 @@
         // Service Worker Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
+                navigator.serviceWorker.register('../sw.js')
                     .then(registration => console.log('Service Worker registered'))
                     .catch(error => console.log('Service Worker registration failed:', error));
             });

@@ -4,16 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Studio del Melucio">
-    <meta name="description" content="FFXIV クラス選択ツール - エオルゼアで最適なクラスを見つけよう">
+    <meta name="description" content="FFXIVクラス選択ツール - エオルゼアであなたの完璧なクラスを見つけよう">
     <meta name="theme-color" content="#667eea">
     
     <!-- PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="FFXIV ツール">
+    <meta name="apple-mobile-web-app-title" content="FFXIV Tool">
     <meta name="mobile-web-app-capable" content="yes">
     
-    <title>FFXIV クラス選択ツール</title>
+    <!-- Manifest -->
+    <link rel="manifest" href="../manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../icon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../icon-180.png">
+    
+    <title>FFXIVキャラクター選択ツール</title>
     
     <style>
         * {
@@ -23,10 +31,11 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+            font-family: 'Yu Gothic', 'Hiragino Sans', 'Meiryo', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -121,6 +130,10 @@
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
         }
 
+        .choice-btn:active {
+            transform: translateY(0);
+        }
+
         .result-container {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
@@ -132,24 +145,64 @@
 
         .result-title {
             font-size: 1.4em;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: center;
             font-weight: bold;
         }
 
-        .result-classes {
-            font-size: 1.1em;
+        .result-section {
+            margin-bottom: 20px;
+        }
+
+        .result-section-title {
+            font-size: 1.2em;
+            font-weight: bold;
             margin-bottom: 10px;
-            padding: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 5px;
+        }
+
+        .result-classes {
             background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .class-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .class-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .class-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .class-features {
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .class-features li {
+            margin-bottom: 3px;
         }
 
         .result-description {
             font-size: 1em;
             font-style: italic;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
         }
 
         .restart-btn {
@@ -185,6 +238,33 @@
             transition: width 0.3s ease;
         }
 
+        .install-prompt {
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+            animation: slideIn 0.5s ease-in;
+        }
+
+        .install-btn {
+            background: white;
+            color: #4CAF50;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-left: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .install-btn:hover {
+            transform: scale(1.05);
+        }
+
         .footer-credit {
             text-align: center;
             margin-top: 20px;
@@ -197,6 +277,12 @@
             color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
             font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-credit a:hover {
+            color: white;
+            text-decoration: underline;
         }
 
         @media (max-width: 480px) {
@@ -216,9 +302,14 @@
 </head>
 <body>
     <div class="container">
+        <div class="install-prompt" id="installPrompt">
+            📱 オフライン使用のためにアプリとしてインストール！
+            <button class="install-btn" id="installBtn">インストール</button>
+        </div>
+        
         <div class="header">
-            <h1>⚔️ FFXIV クラス選択ツール ⚔️</h1>
-            <div class="subtitle">エオルゼアで最適なクラスを見つけよう！</div>
+            <h1>⚔️ FFXIVキャラクター選択ツール ⚔️</h1>
+            <div class="subtitle">エオルゼアであなたの完璧なクラスを見つけよう！</div>
         </div>
         
         <div class="progress-bar">
@@ -226,67 +317,61 @@
         </div>
         
         <div id="content">
-            <!-- 動的コンテンツ -->
+            <!-- 動的コンテンツがここに挿入されます -->
         </div>
     </div>
 
     <div class="footer-credit">
-        開発: <a href="#">Studio del Melucio</a> © 2025
+        <a href="#">Studio del Melucio</a>により開発 © 2025
     </div>
 
     <script>
+        // App Data
         const questions = {
             start: {
-                question: "仲間を支援したいですか、それともダメージを与えたいですか？",
+                question: "他の人を助けるか、ダメージを与えるか、どちらを好みますか？",
                 choices: [
-                    { text: "仲間を支援", next: "helpType" },
+                    { text: "他の人を助ける", next: "helpType" },
                     { text: "ダメージを与える", next: "dpsRange" }
                 ]
             },
             helpType: {
-                question: "仲間を回復したいですか、それともダメージから守りたいですか？",
+                question: "他の人を回復するか、ダメージから守るか、どちらがいいですか？",
                 choices: [
-                    { text: "回復する", next: "healType" },
-                    { text: "ダメージから守る", next: "tankType" }
+                    { text: "回復", next: "healType" },
+                    { text: "ダメージから守る", next: "allTanks" }
                 ]
             },
             healType: {
-                question: "直接回復と予防シールド、どちらが好みですか？",
+                question: "直接回復と予防的なシールド、どちらを好みますか？",
                 choices: [
                     { text: "直接回復", next: "directHeal" },
-                    { text: "予防シールド", next: "shieldHeal" }
-                ]
-            },
-            tankType: {
-                question: "攻撃的なスタイルと防御的なスタイル、どちらが好みですか？",
-                choices: [
-                    { text: "攻撃的", next: "aggressiveTank" },
-                    { text: "防御的", next: "defensiveTank" }
+                    { text: "予防的なシールド", next: "shieldHeal" }
                 ]
             },
             dpsRange: {
-                question: "近接戦闘と遠距離戦闘、どちらが好みですか？",
+                question: "近距離戦闘と遠距離戦闘、どちらで戦いたいですか？",
                 choices: [
-                    { text: "近接戦闘", next: "meleeType" },
+                    { text: "近距離戦闘", next: "meleeType" },
                     { text: "遠距離戦闘", next: "rangedType" }
                 ]
             },
             meleeType: {
-                question: "重い一撃と素早いコンボ、どちらが好みですか？",
+                question: "重い攻撃と速いコンボ、どちらを好みますか？",
                 choices: [
-                    { text: "重い一撃", next: "heavyMelee" },
-                    { text: "素早いコンボ", next: "fastMelee" }
+                    { text: "重い攻撃", next: "heavyMelee" },
+                    { text: "速いコンボ", next: "fastMelee" }
                 ]
             },
             rangedType: {
-                question: "魔法攻撃と物理攻撃、どちらが好みですか？",
+                question: "魔法遠距離戦闘と物理遠距離戦闘、どちらですか？",
                 choices: [
-                    { text: "魔法攻撃", next: "magicType" },
-                    { text: "物理攻撃", next: "physicalRanged" }
+                    { text: "魔法", next: "magicType" },
+                    { text: "物理", next: "physicalRanged" }
                 ]
             },
             magicType: {
-                question: "破壊的な爆発と柔軟な汎用性、どちらが好みですか？",
+                question: "破壊的な爆発と柔軟な汎用性、どちらを好みますか？",
                 choices: [
                     { text: "破壊的な爆発", next: "destructiveMagic" },
                     { text: "柔軟な汎用性", next: "versatileMagic" }
@@ -295,50 +380,153 @@
         };
 
         const results = {
+            allTanks: {
+                title: "🛡️ タンククラス",
+                description: "これらのクラスはパーティを率いて、他の人をダメージから守ります！",
+                beginners: [
+                    {
+                        name: "ナイト（レベル1から）",
+                        features: ["多くの防御アビリティ", "パーティメンバーを回復可能", "最もシンプルなタンクローテーション"]
+                    },
+                    {
+                        name: "戦士（レベル1から）",
+                        features: ["非常に高い自己回復", "ミスを最もよく許してくれる", "プレイしやすい"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "暗黒騎士（レベル30から）",
+                        features: ["MPマネージメント必要", "強力な攻撃アビリティ", "暗黒魔法の美学"]
+                    },
+                    {
+                        name: "ガンブレイカー（レベル60から）",
+                        features: ["複雑なコンボメカニクス", "タンクとしては高ダメージ", "スピーディなゲームプレイ"]
+                    }
+                ]
+            },
             directHeal: {
-                title: "ピュアヒーラー",
-                classes: "白魔道士（幻術士から）または 占星術師（レベル30、蒼天のイシュガルド）",
-                description: "これらのクラスは強力な直接回復に特化しています！"
+                title: "💚 直接ヒーラー",
+                description: "これらのクラスは強力な直接回復に焦点を当てています！",
+                beginners: [
+                    {
+                        name: "白魔道士（レベル1から）",
+                        features: ["最強の単体回復", "シンプルなローテーション", "多くのDot魔法"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "占星術師（レベル30から）",
+                        features: ["カードで個別プレイヤーを強化", "回復とシールドの選択", "複雑なカードメカニクス"]
+                    }
+                ]
             },
             shieldHeal: {
-                title: "バリアヒーラー",
-                classes: "学者（巴術士から）または 賢者（レベル70、暁月のフィナーレ）",
-                description: "これらのクラスはバリアを張ってから回復できます！"
-            },
-            aggressiveTank: {
-                title: "攻撃的タンク",
-                classes: "戦士（斧術士から）または ガンブレイカー（レベル60、漆黒のヴィランズ）",
-                description: "これらのクラスは積極的に攻撃して敵を圧倒します！"
-            },
-            defensiveTank: {
-                title: "防御的タンク",
-                classes: "ナイト（剣術士から）または 暗黒騎士（レベル30、蒼天のイシュガルド）",
-                description: "これらのクラスは制御された防御でパーティーを守ります！"
+                title: "🛡️ シールドヒーラー",
+                description: "これらのクラスはバリアを作り、そして回復します！",
+                beginners: [
+                    {
+                        name: "学者（レベル1から）",
+                        features: ["フェアリーが自動回復", "強力なシールドが利用可能", "簡単なマルチタスク"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "賢者（レベル70から）",
+                        features: ["アダーガルマネージメント", "ダメージと回復の組み合わせ", "複雑なリソース管理"]
+                    }
+                ]
             },
             heavyMelee: {
-                title: "重撃近接DPS",
-                classes: "竜騎士（槍術士から）、侍（レベル50）または リーパー（レベル70、暁月のフィナーレ）",
-                description: "これらのクラスは強力な一撃で大ダメージを与えます！"
+                title: "⚔️ 重近接DPS",
+                description: "これらのクラスは強力な個別攻撃で大ダメージを与えます！",
+                beginners: [
+                    {
+                        name: "竜騎士（レベル1から）",
+                        features: ["長く予測可能なコンボ", "高い単体ターゲットダメージ", "壮観なジャンプ攻撃"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "侍（レベル50から）",
+                        features: ["閃リソース管理", "柔軟なコンボ選択", "非常に高いバーストダメージ"]
+                    },
+                    {
+                        name: "リーパー（レベル70から）",
+                        features: ["ソウルリソースの収集", "変身メカニクス", "高いAoEダメージ"]
+                    }
+                ]
             },
             fastMelee: {
-                title: "高速近接DPS",
-                classes: "モンク（格闘士から）、忍者（双剣士から、レベル10）または ヴァイパー（レベル80、黄金のレガシー）",
-                description: "これらのクラスはスピードと流れるようなコンボが特徴です！"
+                title: "🥊 高速近接DPS",
+                description: "これらのクラスは速度と流れるようなコンボに依存しています！",
+                beginners: [
+                    {
+                        name: "モンク（レベル1から）",
+                        features: ["ポジショニングベースの戦闘", "チャクラシステム", "一貫して高いダメージ"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "忍者（レベル1から）",
+                        features: ["印術の手サイン", "騙し討ちのタイミング", "複雑なバーストウィンドウ"]
+                    },
+                    {
+                        name: "ヴァイパー（レベル80から）",
+                        features: ["デュアルワイドメカニクス", "蛇のオファリングシステム", "速いダブルストライクコンボ"]
+                    }
+                ]
             },
             physicalRanged: {
-                title: "物理遠隔DPS",
-                classes: "吟遊詩人（弓術士から）、機工士（レベル30、蒼天のイシュガルド）または 踊り子（レベル60、漆黒のヴィランズ）",
-                description: "これらのクラスは弓、銃、投擲武器を使い、パーティーを支援できます！"
+                title: "🏹 物理遠隔DPS",
+                description: "これらのクラスは遠距離武器を使い、パーティをサポートできます！",
+                beginners: [
+                    {
+                        name: "吟遊詩人（レベル1から）",
+                        features: ["パーティサポートの歌", "高い機動性", "プロックベースのゲームプレイ"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "機工士（レベル30から）",
+                        features: ["ロボットコンパニオン", "オーバーヒートメカニクス", "バーストウィンドウ管理"]
+                    },
+                    {
+                        name: "踊り子（レベル60から）",
+                        features: ["ダンスパートナーバフシステム", "RNG依存のプロック", "ダンスステップメカニクス"]
+                    }
+                ]
             },
             destructiveMagic: {
-                title: "破壊的魔法DPS",
-                classes: "黒魔道士（呪術士から）または ピクトマンサー（レベル80、黄金のレガシー）",
-                description: "これらのクラスは高ダメージの破壊的な魔法に特化しています！"
+                title: "🔥 破壊的キャスター",
+                description: "これらのクラスは高ダメージの壊滅的な魔法に特化しています！",
+                beginners: [
+                    {
+                        name: "黒魔道士（レベル1から）",
+                        features: ["シンプルな氷・火のローテーション", "最も長いキャスト時間", "最高の単体ターゲットダメージ"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "ピクトマンサー（レベル80から）",
+                        features: ["絵画メカニクス", "クリーチャー召喚", "複雑な魔法組み合わせ"]
+                    }
+                ]
             },
             versatileMagic: {
-                title: "汎用魔法DPS",
-                classes: "召喚士（巴術士から）または 赤魔道士（レベル50、紅蓮のリベレーター）",
-                description: "これらのクラスは柔軟性があり、支援もできます！"
+                title: "🔮 汎用キャスター",
+                description: "これらのクラスは柔軟性を提供し、サポートも可能です！",
+                beginners: [
+                    {
+                        name: "召喚士（レベル1から）",
+                        features: ["シンプルなローテーション", "ペット管理", "インスタントキャスト機動性"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "赤魔道士（レベル50から）",
+                        features: ["白・黒マナバランス", "近接コンボフィニッシャー", "デュアルキャストメカニクス"]
+                    }
+                ]
             }
         };
 
@@ -386,13 +574,53 @@
             const content = document.getElementById('content');
             const result = results[resultKey];
             
+            let beginnersHtml = '';
+            let advancedHtml = '';
+            
+            if (result.beginners && result.beginners.length > 0) {
+                beginnersHtml = `
+                    <div class="result-section">
+                        <div class="result-section-title">👶 初心者向け</div>
+                        <div class="result-classes">
+                            ${result.beginners.map(cls => `
+                                <div class="class-item">
+                                    <div class="class-name">${cls.name}</div>
+                                    <ul class="class-features">
+                                        ${cls.features.map(feature => `<li>${feature}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (result.advanced && result.advanced.length > 0) {
+                advancedHtml = `
+                    <div class="result-section">
+                        <div class="result-section-title">🎯 上級者向け</div>
+                        <div class="result-classes">
+                            ${result.advanced.map(cls => `
+                                <div class="class-item">
+                                    <div class="class-name">${cls.name}</div>
+                                    <ul class="class-features">
+                                        ${cls.features.map(feature => `<li>${feature}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
             content.innerHTML = `
                 <div class="result-container">
-                    <div class="result-title">🎉 ${result.title}</div>
-                    <div class="result-classes">${result.classes}</div>
+                    <div class="result-title">${result.title}</div>
+                    ${beginnersHtml}
+                    ${advancedHtml}
                     <div class="result-description">${result.description}</div>
                 </div>
-                <button class="restart-btn" onclick="restart()">もう一度検索</button>
+                <button class="restart-btn" onclick="restart()">新しく検索</button>
             `;
         }
 
@@ -403,6 +631,39 @@
             showQuestion('start');
         }
 
+        // PWA Installation
+        let deferredPrompt;
+        const installPrompt = document.getElementById('installPrompt');
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installPrompt.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('アプリがインストールされました');
+                }
+                deferredPrompt = null;
+                installPrompt.style.display = 'none';
+            }
+        });
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('../sw.js')
+                    .then(registration => console.log('Service Worker登録済み'))
+                    .catch(error => console.log('Service Worker登録失敗:', error));
+            });
+        }
+
+        // Start
         showQuestion('start');
     </script>
 </body>

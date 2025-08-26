@@ -29,7 +29,7 @@
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
             padding: 50px;
             animation: fadeIn 0.5s ease-in;
@@ -136,30 +136,6 @@
             font-size: 0.95em;
         }
 
-        .coming-soon {
-            opacity: 0.5;
-            cursor: not-allowed;
-            position: relative;
-        }
-
-        .coming-soon::after {
-            content: 'Coming Soon';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(102, 126, 234, 0.95);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: bold;
-        }
-
-        .coming-soon:hover {
-            transform: none;
-        }
-
         @media (max-width: 600px) {
             .container {
                 padding: 30px 20px;
@@ -203,7 +179,7 @@
     <div class="container">
         <div class="header">
             <h1>⚔️ FFXIV Class Selection Tool ⚔️</h1>
-            <div class="subtitle">Choose Your Language / Wählen Sie Ihre Sprache</div>
+            <div class="subtitle">Choose Your Language / Wählen Sie Ihre Sprache / Choisissez votre langue</div>
             <div class="studio-credit">by Studio del Melucio</div>
         </div>
 
@@ -236,6 +212,13 @@
                 <div class="native-name">Español</div>
             </a>
 
+            <!-- Italian -->
+            <a href="it/index.html" class="language-card">
+                <span class="flag">🇮🇹</span>
+                <div class="language-name">Italian</div>
+                <div class="native-name">Italiano</div>
+            </a>
+
             <!-- Portuguese (Brazil) -->
             <a href="pt/index.html" class="language-card">
                 <span class="flag">🇧🇷</span>
@@ -250,14 +233,14 @@
                 <div class="native-name">Русский</div>
             </a>
 
-            <!-- Japanese - Now Available! -->
+            <!-- Japanese -->
             <a href="ja/index.html" class="language-card">
                 <span class="flag">🇯🇵</span>
                 <div class="language-name">Japanese</div>
                 <div class="native-name">日本語</div>
             </a>
 
-            <!-- Korean - Now Available! -->
+            <!-- Korean -->
             <a href="ko/index.html" class="language-card">
                 <span class="flag">🇰🇷</span>
                 <div class="language-name">Korean</div>

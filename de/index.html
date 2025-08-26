@@ -14,12 +14,12 @@
     <meta name="mobile-web-app-capable" content="yes">
     
     <!-- Manifest -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="../manifest.json">
     
     <!-- Icons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../icon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../icon-180.png">
     
     <title>FFXIV Charakter-Wahl-Tool</title>
     
@@ -35,6 +35,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -144,24 +145,64 @@
 
         .result-title {
             font-size: 1.4em;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: center;
             font-weight: bold;
         }
 
-        .result-classes {
-            font-size: 1.1em;
+        .result-section {
+            margin-bottom: 20px;
+        }
+
+        .result-section-title {
+            font-size: 1.2em;
+            font-weight: bold;
             margin-bottom: 10px;
-            padding: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 5px;
+        }
+
+        .result-classes {
             background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .class-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .class-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .class-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .class-features {
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .class-features li {
+            margin-bottom: 3px;
         }
 
         .result-description {
             font-size: 1em;
             font-style: italic;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
         }
 
         .restart-btn {
@@ -224,20 +265,6 @@
             transform: scale(1.05);
         }
 
-        @media (max-width: 480px) {
-            .container {
-                padding: 25px;
-            }
-            
-            h1 {
-                font-size: 1.6em;
-            }
-            
-            .choice-btn {
-                width: 100%;
-            }
-        }
-
         .footer-credit {
             text-align: center;
             margin-top: 20px;
@@ -256,6 +283,20 @@
         .footer-credit a:hover {
             color: white;
             text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 1.6em;
+            }
+            
+            .choice-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -298,7 +339,7 @@
                 question: "Willst du andere heilen oder lieber vor Schaden bewahren?",
                 choices: [
                     { text: "Heilen", next: "healType" },
-                    { text: "Vor Schaden bewahren", next: "tankType" }
+                    { text: "Vor Schaden bewahren", next: "allTanks" }
                 ]
             },
             healType: {
@@ -306,13 +347,6 @@
                 choices: [
                     { text: "Direktes Heilen", next: "directHeal" },
                     { text: "Präventive Schilde", next: "shieldHeal" }
-                ]
-            },
-            tankType: {
-                question: "Willst du lieber aggressiv angreifen oder kontrolliert verteidigen?",
-                choices: [
-                    { text: "Aggressiv angreifen", next: "aggressiveTank" },
-                    { text: "Kontrolliert verteidigen", next: "defensiveTank" }
                 ]
             },
             dpsRange: {
@@ -346,50 +380,153 @@
         };
 
         const results = {
+            allTanks: {
+                title: "🛡️ Tank-Klassen",
+                description: "Diese Klassen führen die Gruppe an und beschützen andere vor Schaden!",
+                beginners: [
+                    {
+                        name: "Paladin (ab Level 1)",
+                        features: ["Viele defensive Fähigkeiten", "Kann Gruppenmitglieder heilen", "Einfachste Tank-Rotation"]
+                    },
+                    {
+                        name: "Krieger (ab Level 1)",
+                        features: ["Sehr hohe Selbstheilung", "Verzeiht Fehler am besten", "Einfach zu spielen"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Dunkelritter (ab Level 30)",
+                        features: ["Mana-Management erforderlich", "Starke Angriffsfähigkeiten", "Dunkle Magie-Ästhetik"]
+                    },
+                    {
+                        name: "Revolverklinge (ab Level 60)",
+                        features: ["Komplexe Combo-Mechaniken", "Hoher Schaden für einen Tank", "Schnelles Gameplay"]
+                    }
+                ]
+            },
             directHeal: {
-                title: "Direkte Heiler",
-                classes: "Weißmagier (via Startklasse Druide) oder Astrologe (ab Level 30, Heavensward-Erweiterung)",
-                description: "Diese Klassen fokussieren sich auf starke direkte Heilung!"
+                title: "💚 Direkte Heiler",
+                description: "Diese Klassen fokussieren sich auf starke direkte Heilung!",
+                beginners: [
+                    {
+                        name: "Weißmagier (ab Level 1)",
+                        features: ["Stärkste Einzelheilungen", "Einfache Rotation", "Viele Schaden-über-Zeit Zauber"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Astrologe (ab Level 30)",
+                        features: ["Bufft einzelne Spieler mit Karten", "Wahl zwischen Heilung und Schilden", "Komplexe Karten-Mechanik"]
+                    }
+                ]
             },
             shieldHeal: {
-                title: "Schild-Heiler",
-                classes: "Gelehrter (via Startklasse Hermetiker) oder Weise (ab Level 70, Endwalker-Erweiterung)",
-                description: "Diese Klassen können Barrieren errichten und dann heilen!"
-            },
-            aggressiveTank: {
-                title: "Aggressive Tanks",
-                classes: "Krieger (via Startklasse Marodeur) oder Revolverklinge (ab Level 60, Shadowbringers-Erweiterung)",
-                description: "Diese Klassen greifen aggressiv an und überwältigen den Feind!"
-            },
-            defensiveTank: {
-                title: "Kontrollierte Tanks",
-                classes: "Paladin (via Startklasse Gladiator) oder Dunkelritter (ab Level 30, Heavensward-Erweiterung)",
-                description: "Diese Klassen verteidigen kontrolliert und beschützen die Gruppe!"
+                title: "🛡️ Schild-Heiler",
+                description: "Diese Klassen können Barrieren errichten und dann heilen!",
+                beginners: [
+                    {
+                        name: "Gelehrter (ab Level 1)",
+                        features: ["Fee heilt automatisch", "Starke Schilde verfügbar", "Einfaches Multi-Tasking"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Weise (ab Level 70)",
+                        features: ["Addersgall-Management", "Schaden und Heilung kombiniert", "Komplexe Ressourcen-Verwaltung"]
+                    }
+                ]
             },
             heavyMelee: {
-                title: "Wuchtige Nahkämpfer",
-                classes: "Dragoon (via Startklasse Pikenier), Samurai (ab Level 50) oder Schnitter (ab Level 70, Endwalker-Erweiterung)",
-                description: "Diese Klassen verursachen mit kraftvollen Einzelschlägen massiven Schaden!"
+                title: "⚔️ Wuchtige Nahkämpfer",
+                description: "Diese Klassen verursachen mit kraftvollen Einzelschlägen massiven Schaden!",
+                beginners: [
+                    {
+                        name: "Dragoon (ab Level 1)",
+                        features: ["Lange, vorhersagbare Kombos", "Hoher Einzelziel-Schaden", "Spektakuläre Sprung-Angriffe"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Samurai (ab Level 50)",
+                        features: ["Sen-Ressourcen Management", "Flexible Combo-Wahl", "Sehr hoher Burst-Schaden"]
+                    },
+                    {
+                        name: "Schnitter (ab Level 70)",
+                        features: ["Seelen-Ressource sammeln", "Verwandlungs-Mechanik", "Hoher AoE-Schaden"]
+                    }
+                ]
             },
             fastMelee: {
-                title: "Schnelle Nahkämpfer",
-                classes: "Mönch (via Startklasse Faustkämpfer), Ninja (via Schurke, ab Level 10) oder Viper (ab Level 80, Dawntrail-Erweiterung)",
-                description: "Diese Klassen setzen auf Geschwindigkeit und flüssige Kombos!"
+                title: "🥊 Schnelle Nahkämpfer",
+                description: "Diese Klassen setzen auf Geschwindigkeit und flüssige Kombos!",
+                beginners: [
+                    {
+                        name: "Mönch (ab Level 1)",
+                        features: ["Positionierungs-basiert", "Chakra-System", "Konstant hoher Schaden"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Ninja (ab Level 1)",
+                        features: ["Mudra-Fingerzeichen", "Trick Attack Timing", "Komplexe Burst-Fenster"]
+                    },
+                    {
+                        name: "Viper (ab Level 80)",
+                        features: ["Dual-Wield Mechanik", "Serpent-Offerings System", "Schnelle Doppelschlag-Kombos"]
+                    }
+                ]
             },
             physicalRanged: {
-                title: "Physische Fernkämpfer",
-                classes: "Barde (via Startklasse Waldläufer), Maschinist (ab Level 30, Heavensward-Erweiterung) oder Tänzer (ab Level 60, Shadowbringers-Erweiterung)",
-                description: "Diese Klassen nutzen Bögen, Schusswaffen oder Wurfwaffen und können nebenbei die Gruppe unterstützen!"
+                title: "🏹 Physische Fernkämpfer",
+                description: "Diese Klassen nutzen Fernwaffen und können nebenbei die Gruppe unterstützen!",
+                beginners: [
+                    {
+                        name: "Barde (ab Level 1)",
+                        features: ["Lieder für Gruppenunterstützung", "Hohe Mobilität", "Procs-basiertes Gameplay"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Maschinist (ab Level 30)",
+                        features: ["Roboter-Begleiter", "Überhitzungs-Mechanik", "Burst-Window Management"]
+                    },
+                    {
+                        name: "Tänzer (ab Level 60)",
+                        features: ["Partner-Buff System", "RNG-abhängige Procs", "Tanz-Schritte Mechanik"]
+                    }
+                ]
             },
             destructiveMagic: {
-                title: "Zerstörerische Magier",
-                classes: "Schwarzmagier (via Startklasse Thaumaturg) oder Piktomant (ab Level 80, Dawntrail-Erweiterung)",
-                description: "Diese Klassen spezialisieren sich auf vernichtende Zauber mit hohem Schaden!"
+                title: "🔥 Zerstörerische Magier",
+                description: "Diese Klassen spezialisieren sich auf vernichtende Zauber mit hohem Schaden!",
+                beginners: [
+                    {
+                        name: "Schwarzmagier (ab Level 1)",
+                        features: ["Einfache Eis/Feuer Rotation", "Längste Zauberzeiten", "Höchster Einzelziel-Schaden"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Piktomant (ab Level 80)",
+                        features: ["Gemälde-Mechanik", "Kreatur-Beschwörung", "Komplexe Zauber-Kombinationen"]
+                    }
+                ]
             },
             versatileMagic: {
-                title: "Vielseitige Magier",
-                classes: "Beschwörer (via Startklasse Hermetiker) oder Rotmagier (ab Level 50, Stormblood-Erweiterung)",
-                description: "Diese Klassen bieten Flexibilität und können auch unterstützen!"
+                title: "🔮 Vielseitige Magier",
+                description: "Diese Klassen bieten Flexibilität und können auch unterstützen!",
+                beginners: [
+                    {
+                        name: "Beschwörer (ab Level 1)",
+                        features: ["Einfache Rotation", "Haustier-Management", "Instant-Cast Mobilität"]
+                    }
+                ],
+                advanced: [
+                    {
+                        name: "Rotmagier (ab Level 50)",
+                        features: ["Mana-Balance zwischen Weiß/Schwarz", "Melee-Combo Finisher", "Dualcast-Mechanik"]
+                    }
+                ]
             }
         };
 
@@ -437,10 +574,50 @@
             const content = document.getElementById('content');
             const result = results[resultKey];
             
+            let beginnersHtml = '';
+            let advancedHtml = '';
+            
+            if (result.beginners && result.beginners.length > 0) {
+                beginnersHtml = `
+                    <div class="result-section">
+                        <div class="result-section-title">👶 Für Anfänger</div>
+                        <div class="result-classes">
+                            ${result.beginners.map(cls => `
+                                <div class="class-item">
+                                    <div class="class-name">${cls.name}</div>
+                                    <ul class="class-features">
+                                        ${cls.features.map(feature => `<li>${feature}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (result.advanced && result.advanced.length > 0) {
+                advancedHtml = `
+                    <div class="result-section">
+                        <div class="result-section-title">🎯 Für Fortgeschrittene</div>
+                        <div class="result-classes">
+                            ${result.advanced.map(cls => `
+                                <div class="class-item">
+                                    <div class="class-name">${cls.name}</div>
+                                    <ul class="class-features">
+                                        ${cls.features.map(feature => `<li>${feature}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
             content.innerHTML = `
                 <div class="result-container">
-                    <div class="result-title">🎉 ${result.title}</div>
-                    <div class="result-classes">${result.classes}</div>
+                    <div class="result-title">${result.title}</div>
+                    ${beginnersHtml}
+                    ${advancedHtml}
                     <div class="result-description">${result.description}</div>
                 </div>
                 <button class="restart-btn" onclick="restart()">Neue Suche starten</button>
@@ -480,7 +657,7 @@
         // Service Worker Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
+                navigator.serviceWorker.register('../sw.js')
                     .then(registration => console.log('Service Worker registriert'))
                     .catch(error => console.log('Service Worker Registrierung fehlgeschlagen:', error));
             });
