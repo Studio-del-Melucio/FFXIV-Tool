@@ -1,250 +1,177 @@
-# FFXIV Class Selection Tool 🎮⚔️
+# ⚔️ FFXIV Class Selection Tool v1.5
 
-A multilingual, interactive tool to help new players find their perfect class in Final Fantasy XIV.
+**Find your perfect class in Eorzea!** A multilingual, interactive tool to help new and returning Final Fantasy XIV players discover their ideal job based on their playstyle preferences.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Languages](https://img.shields.io/badge/Languages-8-brightgreen.svg)](#available-languages)
-[![FFXIV](https://img.shields.io/badge/FFXIV-Dawntrail-blue.svg)](https://www.finalfantasyxiv.com/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-blue?style=for-the-badge)](https://studio-del-melucio.github.io/FFXIV-Tool/)
+[![Version](https://img.shields.io/badge/Version-1.5-green?style=for-the-badge)]()
+[![Languages](https://img.shields.io/badge/Languages-9-orange?style=for-the-badge)]()
+[![PWA](https://img.shields.io/badge/PWA-Ready-purple?style=for-the-badge)]()
 
 ## 🌟 Features
 
-- **8 Languages**: English, German, French, Spanish, Portuguese (BR), Russian, Japanese, Korean
-- **Interactive Decision Tree**: Simple questions lead to personalized class recommendations
-- **Mobile Responsive**: Works perfectly on all devices
-- **PWA Support**: Install as an app on mobile devices
-- **No Installation Required**: Runs directly in the browser
-- **Offline Capable**: Works without internet connection (after first load)
-- **PowerShell Version**: Alternative command-line tool for Windows users
+### 🎯 **Smart Class Recommendation**
+- Interactive questionnaire with 3-4 simple questions
+- Personalized results based on playstyle preferences
+- **NEW**: Results categorized into **Beginner** and **Advanced** sections
+- Detailed gameplay descriptions for each recommended class
 
-## 🌍 Available Languages
+### 🌍 **Multilingual Support**
+Available in **9 languages**:
+- 🇺🇸 **English**
+- 🇩🇪 **German** (Deutsch)
+- 🇫🇷 **French** (Français) 
+- 🇪🇸 **Spanish** (Español)
+- 🇮🇹 **Italian** (Italiano) ⭐ *NEW in v1.5*
+- 🇧🇷 **Portuguese** (Português)
+- 🇷🇺 **Russian** (Русский)
+- 🇯🇵 **Japanese** (日本語)
+- 🇰🇷 **Korean** (한국어)
 
-| Language | Flag | Status | Native Name |
-|----------|------|--------|-------------|
-| English | 🇺🇸 | ✅ Complete | English |
-| German | 🇩🇪 | ✅ Complete | Deutsch |
-| French | 🇫🇷 | ✅ Complete | Français |
-| Spanish | 🇪🇸 | ✅ Complete | Español |
-| Portuguese | 🇧🇷 | ✅ Complete | Português |
-| Russian | 🇷🇺 | ✅ Complete | Русский |
-| Japanese | 🇯🇵 | ✅ Complete | 日本語 |
-| Korean | 🇰🇷 | ✅ Complete | 한국어 |
+### 📱 **Progressive Web App**
+- **Offline functionality** - works without internet connection
+- **Installable** on mobile devices and desktop
+- **Responsive design** optimized for all screen sizes
+- **Fast loading** with service worker caching
 
-## 🚀 Live Demo
+### 🎮 **FFXIV Job Coverage**
+Covers all **20+ jobs** across all roles:
+- **🛡️ Tanks:** Paladin, Warrior, Dark Knight, Gunbreaker
+- **💚 Healers:** White Mage, Scholar, Astrologian, Sage
+- **⚔️ Melee DPS:** Monk, Dragoon, Ninja, Samurai, Reaper, Viper
+- **🏹 Ranged Physical DPS:** Bard, Machinist, Dancer
+- **🔥 Magical DPS:** Black Mage, Summoner, Red Mage, Pictomancer
 
-**[Try it here!](https://studio-del-melucio.github.io/FFXIV-Tool/)**
+## 🆕 What's New in v1.5
 
-## 💻 Installation & Usage
+### **Enhanced User Experience**
+- 🇮🇹 **Italian language support** added
+- 👶 **Beginner/Advanced categorization** for better guidance
+- ⚡ **Simplified tank selection** - shows all 4 tanks directly
+- 📝 **Completely rewritten class descriptions** with concrete gameplay features
 
-### Web Version (Recommended)
+### **Technical Improvements**  
+- 📱 **Better mobile layout** with repositioned footer
+- ⚙️ **Enhanced PWA functionality** and offline caching
+- 🔧 **Updated service worker** with improved background sync
+- 🎯 **Accurate class information** (e.g., Astrologian card mechanics corrected)
 
-#### Online Usage
-Simply visit the [live demo](https://studio-del-melucio.github.io/FFXIV-Tool/) - no installation needed!
+## 🚀 Getting Started
 
-#### Local Installation
+### **Online Usage**
+Simply visit: **[https://studio-del-melucio.github.io/FFXIV-Tool/](https://studio-del-melucio.github.io/FFXIV-Tool/)**
 
-1. Clone the repository:
+### **Install as App**
+1. Visit the website on your device
+2. Look for the "Install" prompt or browser menu option
+3. Add to home screen for offline access
+
+### **Local Development**
 ```bash
-git clone https://github.com/studio-del-melucio/FFXIV-Tool.git
-```
+# Clone the repository
+git clone https://github.com/Studio-del-Melucio/FFXIV-Tool.git
 
-2. Navigate to the project folder:
-```bash
-cd FFXIV-Tool/Web
-```
+# Navigate to project directory
+cd FFXIV-Tool
 
-3. Open `index.html` in your browser or use a local server:
-```bash
-# Using Python
+# Serve locally (using any static file server)
+# Example with Python:
 python -m http.server 8000
 
-# Using Node.js
-npx serve
+# Or with Node.js http-server:
+npx http-server
 ```
 
-4. Open `http://localhost:8000` in your browser
-
-### PowerShell Version (Windows)
-
-For Windows users who prefer command-line tools:
-
-1. Navigate to the `PowerShell` folder
-2. Run the appropriate `.bat` file:
-   - **English**: `FFXIV-Class-Selector.bat`
-   - **German**: `FFXIV-Klassen-Wahl.bat`
-3. Follow the prompts in the console
-
-## 📁 Project Structure
+## 🏗️ Project Structure
 
 ```
-FFXIV-Tool/
-├── Web/                    # Browser-based version
-│   ├── index.html         # Language selection page
-│   ├── sw.js             # Service Worker for PWA
-│   ├── de/               # German version
-│   │   └── index.html
-│   ├── en/               # English version
-│   │   └── index.html
-│   ├── es/               # Spanish version
-│   │   └── index.html
-│   ├── fr/               # French version
-│   │   └── index.html
-│   ├── ja/               # Japanese version
-│   │   └── index.html
-│   ├── ko/               # Korean version
-│   │   └── index.html
-│   ├── pt/               # Portuguese version
-│   │   └── index.html
-│   └── ru/               # Russian version
-│       └── index.html
-├── PowerShell/            # Windows command-line version
-│   ├── FFXIV-Class-Selector.bat
-│   ├── FFXIV-Class-Selector.ps1
-│   ├── FFXIV-Klassen-Wahl.bat
-│   └── FFXIV-Klassen-Wahl.ps1
-├── LICENSE               # MIT License
-└── README.md            # This file
-```
-
-## 🎯 How It Works
-
-The tool uses a decision tree approach with 3-4 simple questions:
-
-1. **Main Role**: Help others or deal damage?
-2. **Sub-Role**: Specific preference within the role
-3. **Play Style**: Combat style preference
-4. **Result**: 2-3 recommended classes with descriptions
-
-### Example Flow:
-```
-Help Others → Heal → Direct Healing → White Mage or Astrologian
-Deal Damage → Melee → Heavy Hits → Dragoon, Samurai, or Reaper
+/
+├── index.html          # Language selection page
+├── manifest.json       # PWA manifest
+├── sw.js              # Service worker
+├── icon-*.png         # App icons
+├── de/index.html      # German version
+├── en/index.html      # English version  
+├── es/index.html      # Spanish version
+├── fr/index.html      # French version
+├── it/index.html      # Italian version
+├── ja/index.html      # Japanese version
+├── ko/index.html      # Korean version
+├── pt/index.html      # Portuguese version
+└── ru/index.html      # Russian version
 ```
 
 ## 🛠️ Technologies Used
 
-- **HTML5** - Structure and PWA capabilities
-- **CSS3** - Responsive design with gradients and animations
-- **Vanilla JavaScript** - No dependencies, lightweight
-- **Progressive Web App** - Installable and offline-capable
-- **Service Worker** - Offline functionality
-- **PowerShell** - Windows scripting version
-
-## 📱 PWA Installation
-
-### Mobile (Android/iOS)
-1. Visit the site in Chrome/Safari
-2. Tap "Add to Home Screen" or install prompt
-3. The app will install and work offline
-
-### Desktop (Chrome/Edge)
-1. Visit the site
-2. Click the install icon in the address bar
-3. Follow the prompts
+- **Frontend:** Vanilla HTML5, CSS3, JavaScript (ES6+)
+- **PWA:** Service Worker, Web App Manifest
+- **Styling:** CSS Grid, Flexbox, CSS Animations
+- **Internationalization:** Native HTML lang attributes
+- **Deployment:** GitHub Pages
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+This is a **community-driven, non-commercial project**! Contributions are very welcome:
 
-### Adding a New Language
+### **Ways to Contribute:**
+- 🐛 **Bug reports** - Found an issue? Let me know!
+- 💡 **Feature suggestions** - Ideas for improvements
+- 🌍 **Translation improvements** - Native speaker corrections
+- 📝 **Content updates** - Job descriptions, meta changes
+- 🔧 **Code contributions** - Pull requests welcome
 
-1. Copy an existing language folder (e.g., `Web/en/`)
-2. Rename it with the appropriate language code
-3. Translate all text in the `index.html` file
-4. Update the main `Web/index.html` language selector
-5. Update this README with the new language
-6. Submit a PR with your changes
+### **How to Contribute:**
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-### Development Guidelines
+## 🎯 Roadmap
 
-- Keep the code vanilla (no frameworks)
-- Maintain responsive design
-- Test on multiple devices
-- Ensure offline functionality works
-- Follow the existing code style
+- [ ] **More languages** (Chinese, etc.)
+- [ ] **Community voting on job descriptions**
+- [ ] **Dark mode theme**
 
-## 📊 Browser Support
+## 🏷️ Version History
 
-- ✅ Chrome/Edge (recommended)
-- ✅ Firefox
-- ✅ Safari
-- ✅ Opera
-- ✅ Mobile browsers
+### **v1.5** - Enhanced Experience Update *(Current)*
+- Added Italian language support
+- Introduced beginner/advanced categorization
+- Simplified tank selection flow
+- Completely rewritten class descriptions
+- Enhanced PWA functionality
 
-## 🎮 About FFXIV Classes
+### **v1.0** - Initial Release
+- Multi-language support (8 languages)
+- Basic class recommendation system
+- PWA functionality
+- Responsive design
 
-This tool covers all classes available as of the Dawntrail expansion (2024):
+## 📄 License
 
-### Tanks
-- Paladin, Warrior, Dark Knight, Gunbreaker
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-### Healers
-- White Mage, Scholar, Astrologian, Sage
+## ⚖️ Disclaimer
 
-### Melee DPS
-- Monk, Dragoon, Ninja, Samurai, Reaper, Viper
+**Final Fantasy XIV** and all related content are owned by **Square Enix**. This tool is a fan-made project and is not affiliated with or endorsed by Square Enix.
 
-### Physical Ranged DPS
-- Bard, Machinist, Dancer
+## 🙏 Acknowledgments
 
-### Magical Ranged DPS
-- Black Mage, Summoner, Red Mage, Pictomancer
+- **Square Enix** for creating the amazing world of FFXIV
+- **FFXIV Community** for feedback and suggestions
+- **r/ffxiv subreddit** for early testing and support
+- All contributors who helped improve translations and features
 
-## 📜 License
+## 📧 Contact
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Credits
-
-- **Developer**: Studio del Melucio
-- **Game**: Final Fantasy XIV © Square Enix
-- **Community**: Thanks to the FFXIV community for feedback
-- **Translations**: Made via translator. Please send feedback if there's anything not correct.
-
-## ⚠️ Disclaimer
-
-This is an unofficial fan-made tool. Final Fantasy XIV is a registered trademark of Square Enix Holdings Co., Ltd. All game content and assets are property of Square Enix.
-
-## 📞 Contact & Social Media
-
-### Get in Touch
-- **Email**: studio.del.melucio@gmail.com
-- **Discord**: studiodelmelucio
-- **GitHub**: [@Studio-del-Melucio](https://github.com/Studio-del-Melucio)
-
-### Follow Development
-- **Twitter/X**: [@St_del_Melucio](https://twitter.com/St_del_Melucio)
-- **Reddit**: [u/StudioDelMelucio](https://reddit.com/user/StudioDelMelucio)
-- **Facebook**: [Studio del Melucio](https://facebook.com/StudioDelMelucio)
-
-### Support the Project
-- ⭐ **Star this repository** if you find it helpful!
-- 🐛 **Report bugs** via [GitHub Issues](https://github.com/Studio-del-Melucio/FFXIV-Tool/issues)
-- 💡 **Request features** in the [Discussions](https://github.com/Studio-del-Melucio/FFXIV-Tool/discussions)
-- 🌍 **Contribute translations** via Pull Request
-
-### In-Game
-- **Server**: Shiva (Light DC)
-- **Character**: Menelaus Mellaus
+**Studio del Melucio**
+- GitHub: [@Studio-del-Melucio](https://github.com/Studio-del-Melucio)
+- Project Link: [https://github.com/Studio-del-Melucio/FFXIV-Tool](https://github.com/Studio-del-Melucio/FFXIV-Tool)
+- Twitter / X: https://x.com/St_del_Melucio
+- Reddit: https://www.reddit.com/user/StudioDelMelucio/
 
 ---
 
-## 🚀 Future Plans
+**Made with ❤️ by the FFXIV community, for the FFXIV community**
 
-- [ ] Add more detailed class descriptions
-- [ ] Include job evolution paths
-- [ ] Add Chinese translation (simplified/traditional)
-- [ ] Add community voting for class recommendations
-
-## 📈 Stats
-
-![GitHub last commit](https://img.shields.io/github/last-commit/studio-del-melucio/FFXIV-Tool)
-![GitHub repo size](https://img.shields.io/github/repo-size/studio-del-melucio/FFXIV-Tool)
-![GitHub stars](https://img.shields.io/github/stars/studio-del-melucio/FFXIV-Tool?style=social)
-
----
-
-<div align="center">
-Made with ❤️ by Studio del Melucio © 2025
-
-**For Eorzea!** 🌟
-</div>
+*Find your calling in Eorzea! ⚔️*
